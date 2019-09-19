@@ -1,0 +1,9 @@
+{
+    "name": "IPL WEB3 Frontend App 2019-2020",
+    "description": "This app illustrates how a react app can be build and deployed",
+    "buildpacks": [
+      {
+        "url": "https://github.com/mars/create-react-app-buildpack"
+      }
+    ]
+  }
