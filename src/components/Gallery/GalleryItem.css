@@ -1,0 +1,17 @@
+div.main{
+    width:100%;
+    display:flex;
+    flex-wrap:nowrap;
+    padding-bottom: 20px;
+    padding-left:20px;
+    /* margin: 0 auto; */
+}
+
+div.galleryItemImg{
+    width:20%;
+}
+
+div.galleryItemDescription{
+    width:80%;
+    padding-left: 20px;
+}
