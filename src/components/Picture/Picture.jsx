@@ -1,34 +1,22 @@
 import React from "react";
-import "./Picture.css";
+//import "./Picture.css";
 import NoPicture from "../Picture/NoPicture";
+import { Image,Col } from "react-bootstrap";
 
-class Picture extends React.Component {    
-  render() {
-    if(this.props.url !== "" && this.props.url!==null && this.props.url!==undefined )
-        return <div className="galleryItemImg"><img src={this.props.url} alt="Loading" /></div> 
+// dynamic loading : https://survivejs.com/webpack/techniques/dynamic-loading/
+var images = require.context('./img', true);
+// NB : we could also put the images in the /public/img folder. In this case, 
+// Webpack would not process it, it would be copied into the build folder untouched.
+// Here the image are "encapsulated" with the picture component...
+
+
+function Picture({url}) {  
+    if(url !== "" && url!==null && url!==undefined )
+        return <Col md={4} className="m-2"><Image fluid src={images("./" + url)} alt="Loading" /></Col> 
     else
         return <NoPicture />;
-    
-    // dynamic import to be further studied... 
-    //return <img src={import(/* webpackChunkName: "image", webpackPreload:true */ "../../img/"+this.props.url)} alt="Loading" />
-    //const image = getImg(this.props.url);
-    //return <img src={image} alt="Loading" />
-  }
+   
 }
-
-// dynamic import to be further studied... 
-// async function getImg(url) {
-//     try{
-//     /* webpackMode: "eager" */
-//     const img = await import(/* webpackChunkName: "image", webpackPreload:true */ "../../img/"+url);//url);
-//     return img.default;
-//     }
-//     catch(err){
-//         console.log("Error:",err);
-//     }
-    
-    
-//  }
 
 export default Picture;
 

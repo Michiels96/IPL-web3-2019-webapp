@@ -1,17 +1,18 @@
 import React from "react";
-import "./GalleryItem.css";
+//import "./GalleryItem.css";
 import Picture from "../Picture/Picture";
 import Description from "../Description/Description";
+import { Row } from "react-bootstrap";
 
-class GalleryItem extends React.Component {
-  render() {
+function GalleryItem({url,description})  {
+  
     return (
-        <div className="main">
-            <Picture url={this.props.url} /> 
-            <Description description={this.props.description} />
-        </div>
+        <Row className="m-2 justify-content-start border border-dark rounded-lg">
+            <Picture url={url} /> 
+            <Description description={description} />
+        </Row>        
     )
-  }
+  
 }
 
 export default GalleryItem;

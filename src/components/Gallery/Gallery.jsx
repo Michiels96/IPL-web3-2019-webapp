@@ -1,20 +1,20 @@
 import React from "react";
-//import Picture from "../Picture/Picture";
 import GalleryItem from "../Gallery/GalleryItem";
-// dynamic loading : https://survivejs.com/webpack/techniques/dynamic-loading/
-var images = require.context('../../img', true);
+//Bootstrap containers
+import { Container } from "react-bootstrap";
+//Bootstrap CSS : https://react-bootstrap.github.io/getting-started/introduction
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-
-class Gallery extends React.Component {
-  render() {
-    const galleryItems = this.props.data.map((item,index) => (
+function Gallery({data}){
+   {
+    const galleryItems = data.map((item,index) => (
         item.picture!=="" ?
-            <GalleryItem key={index}  url={images("./" + item.picture)} description={item.description} />
+            <GalleryItem key={index}  url={item.picture} description={item.description} />
         :
             <GalleryItem key={index}  url="" description={item.description} />
     ));
 
-    return <div>{galleryItems}</div>;
+    return <Container fluid>{galleryItems}</Container>;
   }
 }
 
