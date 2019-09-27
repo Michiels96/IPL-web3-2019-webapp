@@ -1,5 +1,4 @@
 import React from "react";
-//import "./Description.css";
 import { Col } from "react-bootstrap";
 
 function Description({description}) { 
