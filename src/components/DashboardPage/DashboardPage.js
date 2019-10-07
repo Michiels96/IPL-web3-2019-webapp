@@ -24,7 +24,7 @@ const galleryData = [
   },
   {
     picture: "",
-    description: "No picture found..."
+    description: ""
   }
 ];
 
