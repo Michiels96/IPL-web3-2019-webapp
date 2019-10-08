@@ -10,13 +10,15 @@ const isEmpty = (prop) => (
   );
 
 
-  
-
   const withNull = (propName, NullComponent) => (NormalComponent) => {
       return function(props)
         {
-            return isEmpty(props[propName]) ? <NullComponent {...props}/> : <NormalComponent {...props} />;
-    
+          const propValue = props[propName];
+          if(isEmpty(propValue)){
+            return <NullComponent {...props} />
+          } 
+
+          return <NormalComponent {...props} />;
         }
   } 
 
