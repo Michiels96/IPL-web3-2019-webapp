@@ -1,21 +1,41 @@
 import React from "react";
-import GalleryItem from "../Gallery/GalleryItem";
+import GalleryItem from "./Item/GalleryItem";
+import GalleryItemForm from "./Form/GalleryItemForm";
 //Bootstrap containers
 import { Container } from "react-bootstrap";
 //Bootstrap CSS : https://react-bootstrap.github.io/getting-started/introduction
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./Gallery.css";
 
-function Gallery({data}){
-   {
-    const galleryItems = data.map((item,index) => (
-        item.picture!=="" ?
-            <GalleryItem key={index}  url={item.picture} description={item.description} />
-        :
-            <GalleryItem key={index}  url="" description={item.description} />
-    ));
+function Gallery({
+  items,
+  formItem,
 
-    return <Container fluid>{galleryItems}</Container>;
-  }
+  setNewItemText,
+  setNewItemPicture,
+  saveNewItem
+}) {
+  return (
+    <Container fluid>
+      {items.map((item, index) => {
+        const { description, picture } = item;
+
+        return (
+          <GalleryItem
+            key={index}
+            picture={picture}
+            description={description}
+          />
+        );
+      })}
+      <GalleryItemForm 
+        formItem={formItem}
+        setNewItemText={setNewItemText}
+        setNewItemPicture={setNewItemPicture}
+        saveNewItem={saveNewItem}
+      />
+    </Container>
+  );
 }
 
 export default Gallery;
