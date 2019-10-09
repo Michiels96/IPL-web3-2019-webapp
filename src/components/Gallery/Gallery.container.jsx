@@ -8,7 +8,7 @@ const DEFAULT_ITEMS = [
   },
   {
     picture: "",
-    description: ""
+    description: "",
   }
 ];
 
@@ -19,7 +19,7 @@ class GalleryContainer extends React.Component {
       items: [],
       formItem: {
         picture: "",
-        description: ""
+        description: "",
       }
     };
 
@@ -51,7 +51,7 @@ class GalleryContainer extends React.Component {
         items: items
       });
     } catch (err) {
-      console.log("Error in comonentDidMount:", err);
+      console.error("Error in comonentDidMount:", err);
     }
   }
 
@@ -61,7 +61,9 @@ class GalleryContainer extends React.Component {
     });
   }
   setNewItemText(newValue) {
-    const { formItem } = this.state;
+    const { 
+      formItem 
+    } = this.state;
 
     formItem.description = newValue;
 
@@ -72,7 +74,19 @@ class GalleryContainer extends React.Component {
     });
   }
   //To be completed (arguments and function body)
-  setNewItemPicture() {}
+  setNewItemPicture(newValue) {
+    const { 
+      formItem 
+    } = this.state;
+
+    formItem.picture = newValue;
+
+    console.log("GalleryContainer::setNewItemPicture", newValue);
+
+    this.setState({
+      formItem: formItem
+    });
+  }
   saveNewItem() {}
   removeItem() {}
   updateItem() {

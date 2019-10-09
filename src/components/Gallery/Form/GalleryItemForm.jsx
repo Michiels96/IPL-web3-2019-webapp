@@ -20,10 +20,11 @@ function GalleryItemForm({
 })  {
 
     const onDescriptionChangeEvent = (e) => setNewItemText(e.target.value);
-    const onPictureChangeEvent = (e) => console.log(e);
+    const onPictureChangeEvent = (e) => setNewItemPicture(e.target.value) ;//console.log(e);
     const onSubmitEvent = (e) => {
         e.preventDefault();
         console.log("current value", formItem);
+        saveNewItem(formItem);
     }
   
     return (
@@ -61,7 +62,7 @@ function GalleryItemForm({
                 />
             </Form.Group>
 
-            <Button variant="primary" type="submit">
+            <Button variant="primary" type="submit" onSubmit={onSubmitEvent}>
                 Save
             </Button>
         </Form>
