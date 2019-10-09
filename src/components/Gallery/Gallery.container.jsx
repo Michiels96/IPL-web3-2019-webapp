@@ -87,7 +87,17 @@ class GalleryContainer extends React.Component {
       formItem: formItem
     });
   }
-  saveNewItem() {}
+  saveNewItem() {
+    //Since the state is based on the previous state, we need to use a callback
+    //to ensure that we use the previous state
+    this.setState(state =>{
+      const items_updated = state.items.concat(state.formItem);
+      return {
+        items:items_updated,
+      }
+    })
+  }
+
   removeItem() {}
   updateItem() {
     

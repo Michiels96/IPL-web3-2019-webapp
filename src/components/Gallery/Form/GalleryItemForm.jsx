@@ -20,11 +20,11 @@ function GalleryItemForm({
 })  {
 
     const onDescriptionChangeEvent = (e) => setNewItemText(e.target.value);
-    const onPictureChangeEvent = (e) => console.log(e);
+    const onPictureChangeEvent = (e) => setNewItemPicture(e.target.value);
     const onSubmitEvent = (e) => {
         e.preventDefault();
         console.log("current value", formItem);
-        saveNewItem(formItem);
+        saveNewItem();
     }
   
     return (
