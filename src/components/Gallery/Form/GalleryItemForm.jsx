@@ -23,7 +23,7 @@ function GalleryItemForm({
     const onPictureChangeEvent = (e) => console.log(e);
     const onSubmitEvent = (e) => {
         e.preventDefault();
-        console.log("current value", formItem);
+        console.log("GalleryItemForm::onSubmitEvent, current value", formItem);
     }
   
     return (
