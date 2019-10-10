@@ -64,14 +64,16 @@ class GalleryContainer extends React.Component {
   }
 
   setNewItemText(newValue) {
-    const formItem = {...this.state.formItem};
-
-    formItem.description = newValue;
-
     console.log("GalleryContainer::setNewItemText", newValue);
 
+    const { formItem } = this.state;
+    
+    const newFormItem = {
+      ...formItem,
+      description: newValue
+    }
     this.setState({
-      formItem: formItem
+      formItem: newFormItem
     });
   }
   //To be completed (arguments and function body)
