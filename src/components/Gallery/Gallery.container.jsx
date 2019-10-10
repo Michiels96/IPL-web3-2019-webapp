@@ -115,6 +115,24 @@ class GalleryContainer extends React.Component {
   }
 
   removeItem(item_id) {
+    // Currently the id is directly the item index in this.state.items
+    const index_found = item_id;
+    // retrieve the item in the state based on the id
+    // const index_found = this.state.items.findIndex(item => {
+    //   return item.id == current_id;
+    // });
+ 
+    //Since the state is based on the previous state, we need to use a callback
+    //to ensure that we use the previous state
+    if (index_found > -1) {
+      this.setState(state => {
+        // don't mutate the original state.data arrow, so use slice & concat()
+        const items_updated = state.items.slice(0, index_found).concat(state.items.slice(index_found+1));
+        return {
+          items:items_updated,
+        };
+      });
+    }
     
 
   }

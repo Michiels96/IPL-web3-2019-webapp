@@ -4,9 +4,15 @@ import Picture from "../../Picture/Picture";
 import Description from "../../Description/Description";
 
 function GalleryItem({
+    id,
     picture,
-    description
+    description,
+    removeItem,
 })  {
+    const onClickEvent = (e) => {       
+        removeItem(id);
+    }
+  
   
     return (
         <Row className="m-2 justify-content-start border border-dark rounded-lg">
@@ -26,7 +32,7 @@ function GalleryItem({
                     id="delete_item"
                     variant="btn btn-outline-dark"
                     className="m-2"
-                    disabled                    
+                    onClick={onClickEvent}                    
                 >
                     Delete
                 </Button>

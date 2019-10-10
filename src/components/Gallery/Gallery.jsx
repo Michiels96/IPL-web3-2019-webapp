@@ -10,10 +10,10 @@ import "./Gallery.css";
 function Gallery({
   items,
   formItem,
-
   setNewItemText,
   setNewItemPicture,
-  saveNewItem
+  saveNewItem,
+  removeItem,
 }) {
   return (
     <Container fluid>
@@ -23,8 +23,10 @@ function Gallery({
         return (
           <GalleryItem
             key={index}
+            id={index}
             picture={picture}
             description={description}
+            removeItem={removeItem}
           />
         );
       })}
