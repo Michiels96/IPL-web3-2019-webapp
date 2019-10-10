@@ -12,8 +12,10 @@ function Gallery({
   formItem,
   setNewItemText,
   setNewItemPicture,
+  setExistingItemText,
   saveNewItem,
   removeItem,
+  updateItem,
 }) {
   return (
     <Container fluid>
@@ -27,6 +29,8 @@ function Gallery({
             picture={picture}
             description={description}
             removeItem={removeItem}
+            updateItem={updateItem}
+            setExistingItemText={setExistingItemText}
           />
         );
       })}

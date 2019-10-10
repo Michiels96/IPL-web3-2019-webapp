@@ -24,6 +24,9 @@ function GalleryItemForm({
     const onSubmitEvent = (e) => {
         e.preventDefault();
         console.log("current value", formItem);
+        //ensure that the Picture is updated (in case there were no change event)
+        if (formItem.picture==="")
+            setNewItemPicture(AVAILABLE_PICTURES[0]);
         saveNewItem();
     }
   

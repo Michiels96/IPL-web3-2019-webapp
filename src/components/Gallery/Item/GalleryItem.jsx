@@ -8,22 +8,23 @@ function GalleryItem({
     picture,
     description,
     removeItem,
+    updateItem,
+    setExistingItemText,
 })  {
-    const onClickEvent = (e) => {       
-        removeItem(id);
-    }
+    const onDeleteEvent = (e) => removeItem(id);
   
+    const onSaveEvent = (e) => updateItem(id);
   
     return (
         <Row className="m-2 justify-content-start border border-dark rounded-lg">
             <Picture picture={picture} /> 
-            <Description description={description} />
+            <Description id={id} description={description} setExistingItemText={setExistingItemText} />
             <Col className="col text-center">
                 <Button
                 id="save_item"
                 variant="btn btn-outline-dark"
                 className="m-2"
-                disabled                
+                onClick={onSaveEvent}                
                 >
                 Save
                 </Button>
@@ -32,7 +33,7 @@ function GalleryItem({
                     id="delete_item"
                     variant="btn btn-outline-dark"
                     className="m-2"
-                    onClick={onClickEvent}                    
+                    onClick={onDeleteEvent}                    
                 >
                     Delete
                 </Button>

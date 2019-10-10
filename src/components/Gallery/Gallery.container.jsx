@@ -24,6 +24,7 @@ class GalleryContainer extends React.Component {
     };
 
     this.setNewItemText = this.setNewItemText.bind(this);
+    this.setExistingItemText = this.setExistingItemText.bind(this);
     this.setNewItemPicture = this.setNewItemPicture.bind(this);
     this.saveNewItem = this.saveNewItem.bind(this);
     this.removeItem = this.removeItem.bind(this);
@@ -37,6 +38,7 @@ class GalleryContainer extends React.Component {
         items={this.state.items}
         formItem={this.state.formItem}
         setNewItemText={this.setNewItemText}
+        setExistingItemText={this.setExistingItemText}
         setNewItemPicture={this.setNewItemPicture}
         saveNewItem={this.saveNewItem}
         removeItem={this.removeItem}
@@ -76,16 +78,39 @@ class GalleryContainer extends React.Component {
       formItem: newFormItem
     });
   }
+
+  setExistingItemText(item_id, newValue) {
+    console.log("GalleryContainer::setExistingItemText",newValue);
+
+    const { items } = this.state;
+    
+    const updatedItems = {
+      ...items,
+    }
+
+    // Currently the id is directly the item index in this.state.items
+    const index_found = item_id;
+    //Since the state is based on the previous state, we need to use a callback
+    //to ensure that we use the previous state
+    if (index_found > -1) {
+      updatedItems[index_found].description = newValue;
+      this.setState(state => {  
+        return {
+          items:updatedItems,
+        };
+      });
+    }
+
+    this.setState({
+      items: items
+    });
+  }
+
   //To be completed (arguments and function body)
   setNewItemPicture(newValue) {
-      const formItem = {...this.state.formItem};
-
-    //console.log('before:',this.state.formItem);
+    const formItem = {...this.state.formItem};
     formItem.picture = newValue;
-    //console.log('after:',this.state.formItem);
-
     console.log("GalleryContainer::setNewItemPicture", newValue);
-    console.log("form item:",formItem);
     this.setState({
       formItem: formItem
     });
@@ -95,7 +120,6 @@ class GalleryContainer extends React.Component {
 
     // Prepare the reset of the state for the formItem
     const formItem = {...this.state.formItem};
-    //console.log("formItem state prior:",this.state.formItem);
     formItem.picture = "";
     formItem.description = "";
 
@@ -138,8 +162,8 @@ class GalleryContainer extends React.Component {
     
 
   }
-  updateItem() {
-    
+  updateItem(item_id) {
+    console.log("Make call to API for element with id:",item_id," .Update with", this.state.items[item_id]);
   }
 }
 
