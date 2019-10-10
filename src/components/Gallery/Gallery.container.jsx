@@ -31,6 +31,7 @@ class GalleryContainer extends React.Component {
   }
 
   render() {
+    console.log("render:",this.state.items);
     return (
       <Gallery
         items={this.state.items}
@@ -56,14 +57,14 @@ class GalleryContainer extends React.Component {
   }
 
   loadItems() {
+    console.log("loadItems")
     return new Promise((resolve, reject) => {
       resolve(DEFAULT_ITEMS);
     });
   }
+
   setNewItemText(newValue) {
-    const { 
-      formItem 
-    } = this.state;
+    const formItem = {...this.state.formItem};
 
     formItem.description = newValue;
 
@@ -75,30 +76,48 @@ class GalleryContainer extends React.Component {
   }
   //To be completed (arguments and function body)
   setNewItemPicture(newValue) {
-    const { 
-      formItem 
-    } = this.state;
+      const formItem = {...this.state.formItem};
 
+    //console.log('before:',this.state.formItem);
     formItem.picture = newValue;
+    //console.log('after:',this.state.formItem);
 
     console.log("GalleryContainer::setNewItemPicture", newValue);
-
+    console.log("form item:",formItem);
     this.setState({
       formItem: formItem
     });
   }
+
   saveNewItem() {
+
+    // Prepare the reset of the state for the formItem
+    const formItem = {...this.state.formItem};
+    //console.log("formItem state prior:",this.state.formItem);
+    formItem.picture = "";
+    formItem.description = "";
+
     //Since the state is based on the previous state, we need to use a callback
-    //to ensure that we use the previous state
+    //to ensure that we use the previous state    
     this.setState(state =>{
-      const items_updated = state.items.concat(state.formItem);
+      const items_updated = state.items.concat({...state.formItem});
       return {
         items:items_updated,
+        formItem:formItem,
       }
     })
+
+
+     
+
+  
+
   }
 
-  removeItem() {}
+  removeItem(item_id) {
+    
+
+  }
   updateItem() {
     
   }
