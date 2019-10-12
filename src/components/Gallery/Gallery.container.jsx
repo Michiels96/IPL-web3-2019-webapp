@@ -1,6 +1,13 @@
 import React from "react";
 import Gallery from "./Gallery";
 
+const gallery_api_URL= "http://localhost:8080/gallery/";
+// Understanding CORS Ajax issues : https://stackoverflow.com/questions/21854516/understanding-ajax-cors-and-security-considerations
+// & https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
+//Check Proxying API Requests in Development :
+// https://create-react-app.dev/docs/proxying-api-requests-in-development
+//const gallery_api_URL="/api/gallery/";
+
 const DEFAULT_ITEMS = [
   {
     picture: "welcome-keep-calm.jpg",
@@ -53,19 +60,29 @@ class GalleryContainer extends React.Component {
   async componentDidMount() {
     try {
       const items = await this.loadItems();
-      this.setState({
-        items: items
-      });
+      if (items!==undefined)
+        this.setState({
+          items: items
+        });
     } catch (err) {
       console.error("Error in comonentDidMount:", err);
     }
   }
 
   loadItems() {
-    console.log("loadItems")
-    return new Promise((resolve, reject) => {
-      resolve(DEFAULT_ITEMS);
-    });
+    console.log("loadItems");
+
+    fetch(gallery_api_URL)
+      .then(response => response.json())
+      .then(data => {
+        this.setState({ items: data });        
+      })
+      .catch(err => console.error("Error when fetching gallery API:", err));
+
+
+    // return new Promise((resolve, reject) => {
+    //   resolve(DEFAULT_ITEMS);
+    // });
   }
 
   setNewItemText(newValue) {
