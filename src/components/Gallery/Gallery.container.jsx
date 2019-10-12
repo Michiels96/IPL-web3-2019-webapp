@@ -19,6 +19,7 @@ class GalleryContainer extends React.Component {
       items: [],
       formItem: {
         picture: "",
+        externalPicture:"",
         description: "",
       }
     };
@@ -26,6 +27,7 @@ class GalleryContainer extends React.Component {
     this.setNewItemText = this.setNewItemText.bind(this);
     this.setExistingItemText = this.setExistingItemText.bind(this);
     this.setNewItemPicture = this.setNewItemPicture.bind(this);
+    this.setNewItemExternalPicture = this.setNewItemExternalPicture.bind(this);
     this.saveNewItem = this.saveNewItem.bind(this);
     this.removeItem = this.removeItem.bind(this);
     this.updateItem = this.updateItem.bind(this);
@@ -40,6 +42,7 @@ class GalleryContainer extends React.Component {
         setNewItemText={this.setNewItemText}
         setExistingItemText={this.setExistingItemText}
         setNewItemPicture={this.setNewItemPicture}
+        setNewItemExternalPicture={this.setNewItemExternalPicture}
         saveNewItem={this.saveNewItem}
         removeItem={this.removeItem}
         updateItem={this.updateItem}
@@ -106,7 +109,6 @@ class GalleryContainer extends React.Component {
     });
   }
 
-  //To be completed (arguments and function body)
   setNewItemPicture(newValue) {
     const formItem = {...this.state.formItem};
     formItem.picture = newValue;
@@ -116,17 +118,35 @@ class GalleryContainer extends React.Component {
     });
   }
 
+  setNewItemExternalPicture(newValue) {
+    const formItem = {...this.state.formItem};
+    formItem.externalPicture = newValue;
+    console.log("GalleryContainer::setNewItemExternalPicture", newValue);
+    this.setState({
+      formItem: formItem
+    });
+  }
+
   saveNewItem() {
 
     // Prepare the reset of the state for the formItem
+    console.log("VER£Y Prior to update... ", this.state.formItem);
     const formItem = {...this.state.formItem};
     formItem.picture = "";
+    formItem.externalPicture ="";
     formItem.description = "";
+
+    //https://apod.nasa.gov/apod/image/1907/SpotlessSunIss_Colacurcio_2048.jpg
+
 
     //Since the state is based on the previous state, we need to use a callback
     //to ensure that we use the previous state    
     this.setState(state =>{
-      const items_updated = state.items.concat({...state.formItem});
+      //const items_updated = state.items.concat({...state.formItem});
+      // use formItem.externalPicture if it is not empty, else use formItem.picture
+      const picture = state.formItem.externalPicture !== "" ? state.formItem.externalPicture : state.formItem.picture;
+      const items_updated = [...state.items,{picture:picture, description:state.formItem.description} ];
+      console.log("Prior to update... ", items_updated);
       return {
         items:items_updated,
         formItem:formItem,

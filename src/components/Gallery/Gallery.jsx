@@ -12,6 +12,7 @@ function Gallery({
   formItem,
   setNewItemText,
   setNewItemPicture,
+  setNewItemExternalPicture,
   setExistingItemText,
   saveNewItem,
   removeItem,
@@ -38,6 +39,7 @@ function Gallery({
         formItem={formItem}
         setNewItemText={setNewItemText}
         setNewItemPicture={setNewItemPicture}
+        setNewItemExternalPicture={setNewItemExternalPicture}
         saveNewItem={saveNewItem}
       />
     </Container>

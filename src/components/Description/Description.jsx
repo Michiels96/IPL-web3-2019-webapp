@@ -18,18 +18,12 @@ function Description({
     //mx-2 mx-md-auto : center the description from medium viewport (even though the row align content from start)
     //m-2 my-md-auto : add margin for small viewport, else center the      
     return <Col md={6} 
-                className="my-2 mx-2 mx-md-auto border border-secondary rounded-lg" 
-                //contentEditable="true" 
-                //onInput={onDescriptionChangeEvent} 
-                //suppressContentEditableWarning={true}
-                >
+                className="my-2 mx-2 mx-md-auto border border-secondary rounded-lg">
                 <ContentEditable
                     html={description}                    
                     //className="content-editable"
                     onChange={onDescriptionChangeEvent}
-                />
-
-            {/* {description} */}
+                />    
             </Col>  
 }
 
