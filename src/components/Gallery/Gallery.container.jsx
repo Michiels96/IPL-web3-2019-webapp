@@ -1,12 +1,12 @@
 import React from "react";
 import Gallery from "./Gallery";
 
-const gallery_api_URL= "http://localhost:8080/gallery/";
+//const gallery_api_URL= "http://localhost:8080/gallery/";
 // Understanding CORS Ajax issues : https://stackoverflow.com/questions/21854516/understanding-ajax-cors-and-security-considerations
 // & https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
 //Check Proxying API Requests in Development :
 // https://create-react-app.dev/docs/proxying-api-requests-in-development
-//const gallery_api_URL="/api/gallery/";
+const gallery_api_URL="/api/gallery/";
 
 const DEFAULT_ITEMS = [
   {

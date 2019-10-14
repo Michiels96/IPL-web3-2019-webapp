@@ -1,8 +1,6 @@
 import React from "react";
 
 import { HashRouter as Router, Switch, Route } from "react-router-dom";
-// Use of BrowserRouter to get regular URL (without the #)
-//import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import DashboardPage from "./DashboardPage/DashboardPage";
 import Navigation from "./Navigation/Navigation";
 import Quote from "./Quote/Quote";
