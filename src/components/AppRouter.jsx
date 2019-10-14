@@ -6,6 +6,7 @@ import Navigation from "./Navigation/Navigation";
 import Quote from "./Quote/Quote";
 import Title from "./Title/Title";
 import GalleryContainer from "./Gallery/Gallery.container";
+import ToDoAppContainer from "./TodoApp/Containerized/TodoApp.Container";
 
 
 function AppRouter() {   
@@ -28,6 +29,10 @@ function AppRouter() {
         <Route path="/gallery">
           <Title>Gallery</Title>
           <GalleryContainer />
+        </Route>
+        <Route path="/todoapp">
+          <Title>ToDoApp</Title>
+          <ToDoAppContainer />
         </Route>
         <Route path="/">
           <DashboardPage />

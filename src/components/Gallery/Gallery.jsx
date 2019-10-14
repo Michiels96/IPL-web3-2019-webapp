@@ -17,6 +17,7 @@ function Gallery({
   saveNewItem,
   removeItem,
   updateItem,
+  available_pictures,
 }) {
   return (
     <Container fluid>
@@ -25,8 +26,8 @@ function Gallery({
 
         return (
           <GalleryItem
-            key={index}
-            id={index}
+            key={item._id}
+            id={item._id}
             picture={picture}
             description={description}
             removeItem={removeItem}
@@ -41,6 +42,7 @@ function Gallery({
         setNewItemPicture={setNewItemPicture}
         setNewItemExternalPicture={setNewItemExternalPicture}
         saveNewItem={saveNewItem}
+        available_pictures={available_pictures}
       />
     </Container>
   );

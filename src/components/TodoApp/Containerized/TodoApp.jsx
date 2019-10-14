@@ -7,7 +7,7 @@ const TodoApp = ({
   handleSubmit,
 }) => {
     return (
-      <div>
+      <div className="ml-4">
         <h3>TODO</h3>
 
         <ul>
@@ -22,6 +22,7 @@ const TodoApp = ({
             id="new-todo"
             onChange={handleChange}
             value={text}
+            className="ml-2"
           />
           <button>Add #{items.length + 1}</button>
         </form>

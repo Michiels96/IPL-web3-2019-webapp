@@ -10,6 +10,7 @@ function Navigation() {
         <Nav.Link as={Link} to="/">Dashboard</Nav.Link>
         <Nav.Link as={Link} to="/quote">Quote</Nav.Link>
         <Nav.Link as={Link} to="/gallery">Gallery</Nav.Link>
+        <Nav.Link as={Link} to="/todoapp">ToDoApp</Nav.Link>
       </Nav>
     </Navbar>
   );

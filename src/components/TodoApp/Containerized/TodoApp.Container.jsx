@@ -1,7 +1,7 @@
 import React from "react";
 import TodoApp from './TodoApp';
 
-class TodoApp extends React.Component {
+class TodoAppContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
@@ -44,4 +44,4 @@ class TodoApp extends React.Component {
   }
 }
 
-export default TodoApp;
+export default TodoAppContainer;

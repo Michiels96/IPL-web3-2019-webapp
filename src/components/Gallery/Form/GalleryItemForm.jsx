@@ -1,12 +1,13 @@
 import React from "react";
 import { Form, Button,Tabs,Tab } from "react-bootstrap";
 
+/*
 const AVAILABLE_PICTURES = [
   "welcome-heart.jpg",
   "welcome-keep-calm.jpg",
   "welcome-sky.jpg",
   "welcome-team.jpg",
-];
+];*/
 
 function GalleryItemForm({
   formItem,
@@ -15,16 +16,14 @@ function GalleryItemForm({
   setNewItemPicture,
   setNewItemExternalPicture,
   saveNewItem,
+  available_pictures,
 }) {
   const onDescriptionChangeEvent = e => setNewItemText(e.target.value);
   const onExternalPictureChangeEvent = e => setNewItemExternalPicture(e.target.value);
   const onPictureChangeEvent = e => setNewItemPicture(e.target.value);
   const onSubmitEvent = e => {
     e.preventDefault();
-    console.log("current value", formItem);
-    //ensure that the Picture is updated (in case there were no change event)
-    if (formItem.picture === "") 
-        setNewItemPicture(AVAILABLE_PICTURES[0]);
+    console.log("current value", formItem);    
     saveNewItem();
   };
 
@@ -39,7 +38,7 @@ function GalleryItemForm({
               as="select"
               onChange={onPictureChangeEvent}
             >
-              {AVAILABLE_PICTURES.map(picture => {
+              {available_pictures.map(picture => {
                 return (
                   <option key={picture} value={picture}>
                     {picture}
