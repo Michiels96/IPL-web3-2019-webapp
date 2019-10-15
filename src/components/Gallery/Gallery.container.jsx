@@ -102,11 +102,11 @@ class GalleryContainer extends React.Component {
   setExistingItemText(item_id, newValue) {
     console.log("GalleryContainer::setExistingItemText",newValue);
 
-    const { items } = this.state;
+    //const { items } = this.state;
     
-    const updatedItems = {
-      ...items,
-    }
+    const updatedItems = [
+      ...this.state.items,
+    ]
 
     // Currently the id is directly the item index in this.state.items
     const index_found = item_id;
@@ -121,9 +121,6 @@ class GalleryContainer extends React.Component {
       });
     }
 
-    this.setState({
-      items: items
-    });
   }
 
   setNewItemPicture(newValue) {
