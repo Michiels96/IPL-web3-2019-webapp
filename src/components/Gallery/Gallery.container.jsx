@@ -34,6 +34,7 @@ class GalleryContainer extends React.Component {
       formItem: {
         picture: "",
         externalPicture:"",
+        internalPicture:"",
         description: "",
       }
     };
@@ -42,6 +43,7 @@ class GalleryContainer extends React.Component {
     this.setExistingItemText = this.setExistingItemText.bind(this);
     this.setNewItemPicture = this.setNewItemPicture.bind(this);
     this.setNewItemExternalPicture = this.setNewItemExternalPicture.bind(this);
+    this.setNewItemInternalPicture = this.setNewItemInternalPicture.bind(this);
     this.saveNewItem = this.saveNewItem.bind(this);
     this.removeItem = this.removeItem.bind(this);
     this.updateItem = this.updateItem.bind(this);
@@ -57,6 +59,7 @@ class GalleryContainer extends React.Component {
         setExistingItemText={this.setExistingItemText}
         setNewItemPicture={this.setNewItemPicture}
         setNewItemExternalPicture={this.setNewItemExternalPicture}
+        setNewItemInternalPicture={this.setNewItemInternalPicture}
         saveNewItem={this.saveNewItem}
         removeItem={this.removeItem}
         updateItem={this.updateItem}
@@ -151,14 +154,23 @@ class GalleryContainer extends React.Component {
     });
   }
 
+  setNewItemInternalPicture(newValue) {
+    const formItem = {...this.state.formItem};
+    formItem.internalPicture = newValue;
+    console.log("GalleryContainer::setNewItemInternalPicture", newValue);
+    this.setState({
+      formItem: formItem
+    });
+  }
+
   async saveNewItem() {
     const formItem = {...this.state.formItem};
-    // use formItem.externalPicture if it is not empty, else use formItem.picture    
-    let picture = this.state.formItem.externalPicture !== "" ? this.state.formItem.externalPicture : this.state.formItem.picture;
+    // use formItem.internalPicture if it is not empty, else use formItem.externalPicture, else use formItem.picture    
+    let picture = formItem.internalPicture || formItem.externalPicture || formItem.picture;
     //in case there were no change event (no picture selected), set the picture to default value
     if (picture ==="")
       picture = AVAILABLE_PICTURES[0];
-    
+      
     const item = {picture:picture,description:formItem.description};
 
     try{
@@ -177,6 +189,7 @@ class GalleryContainer extends React.Component {
       // Prepare the reset of the state for the formItem    
       formItem.picture = "";
       formItem.externalPicture ="";
+      formItem.internalPicture ="";
       formItem.description = "";
       //const items_updated = state.items.concat({...state.formItem});      
       const items_updated = [...state.items,

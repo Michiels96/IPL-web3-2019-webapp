@@ -13,6 +13,7 @@ function Gallery({
   setNewItemText,
   setNewItemPicture,
   setNewItemExternalPicture,
+  setNewItemInternalPicture,
   setExistingItemText,
   saveNewItem,
   removeItem,
@@ -41,6 +42,7 @@ function Gallery({
         setNewItemText={setNewItemText}
         setNewItemPicture={setNewItemPicture}
         setNewItemExternalPicture={setNewItemExternalPicture}
+        setNewItemInternalPicture = {setNewItemInternalPicture}
         saveNewItem={saveNewItem}
         available_pictures={available_pictures}
       />

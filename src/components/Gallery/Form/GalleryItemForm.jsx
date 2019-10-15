@@ -1,5 +1,6 @@
 import React from "react";
 import { Form, Button,Tabs,Tab } from "react-bootstrap";
+import LoadPicture from "../../Picture/LoadPicture";
 
 /*
 const AVAILABLE_PICTURES = [
@@ -15,6 +16,7 @@ function GalleryItemForm({
   setNewItemText,
   setNewItemPicture,
   setNewItemExternalPicture,
+  setNewItemInternalPicture,
   saveNewItem,
   available_pictures,
 }) {
@@ -60,7 +62,12 @@ function GalleryItemForm({
                     onChange={onExternalPictureChangeEvent}
                 />
             </Form.Group>
-            </Tab>       
+        </Tab>
+        <Tab eventKey="internalPicture" title="Internal picture">
+            <Form.Group controlId="internalPicture">
+                <LoadPicture setNewItemInternalPicture={setNewItemInternalPicture} />           </Form.Group>
+        </Tab>  
+
       </Tabs>
 
       <Form.Group controlId="description">
