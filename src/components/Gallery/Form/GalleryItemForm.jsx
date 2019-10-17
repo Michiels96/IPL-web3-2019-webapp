@@ -1,6 +1,7 @@
 import React from "react";
 import { Form, Button,Tabs,Tab } from "react-bootstrap";
 import LoadPicture from "../../Picture/LoadPicture";
+import {ThemeContext} from '../../Context/Theme';
 
 /*
 const AVAILABLE_PICTURES = [
@@ -79,10 +80,20 @@ function GalleryItemForm({
           onChange={onDescriptionChangeEvent}
         />
       </Form.Group>
-
-      <Button variant="primary" type="submit" onSubmit={onSubmitEvent}>
-        Save
-      </Button>
+      {/* Consume ThemeContext */}
+      <ThemeContext.Consumer>
+        { ({currentTheme}) => {
+          return (
+            <Button variant={currentTheme} type="submit" onSubmit={onSubmitEvent}>
+              Save
+            </Button>
+          )
+        }
+        
+       }
+        
+      </ThemeContext.Consumer>
+      
     </Form>
   );
 }
