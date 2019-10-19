@@ -23,6 +23,7 @@ export const ThemeProvider= ({children})=> {
     const setCurrentThemeOnChange = color => {
         // Store the currentTheme in the localStorage
         localStorage.setItem('currentTheme',color);
+        // Update the state
         return setCurrentTheme(color);
     }
     const providerData = {themes,currentTheme,setCurrentThemeOnChange};
