@@ -1,20 +1,31 @@
 import React,  { useState } from 'react';
-export const THEMES = ["primary", "secondary", "success", "dark"];
+export const themes = ["AliceBlue", "Azure", "DarkOrchid", "DarkSalmon","Gainsboro","GhostWhite","LightPink","LimeGreen","Wheat"];
 
 export const ThemeContext = React.createContext({
-  themes:[...THEMES],
-  currentTheme: THEMES[3], // default value
-  setCurrentTheme: () => {}
+  themes:[...themes],
+  currentTheme: themes[0], // default value
+  setCurrentThemeOnChange: () => {}
 });
 
 // Create a ThemeProvider that manage the context in its state and accept
 // any kind of "children" components
 // hooks are used in order to manage state
 export const ThemeProvider= ({children})=> {
-    const [currentTheme,setCurrentTheme] = useState(THEMES[3]);
-    const [themes,setThemes] = useState([...THEMES]);
-    const setCurrentThemeOnChange = (index) => {setCurrentTheme(themes[index])};
-    const providerData = {themes,currentTheme,setCurrentTheme};
+    //load the currentTheme (color) from localStorage
+    let theme = localStorage.getItem('currentTheme');
+    if (theme===null)
+        theme=themes[3];
+    else
+        console.log("Theme color loaded from localStorage:",theme);
+    // Initialize the current theme state
+    const [currentTheme,setCurrentTheme] = useState(theme);
+    // Initialize the context function to update the state
+    const setCurrentThemeOnChange = color => {
+        // Store the currentTheme in the localStorage
+        localStorage.setItem('currentTheme',color);
+        return setCurrentTheme(color);
+    }
+    const providerData = {themes,currentTheme,setCurrentThemeOnChange};
     return(
         <ThemeContext.Provider value={providerData}>
             {children}

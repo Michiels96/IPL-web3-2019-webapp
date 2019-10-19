@@ -2,9 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Nav, Navbar} from "react-bootstrap";
 
-function Navigation() {
-  return (
-    <Navbar bg="dark" variant="dark">
+function Navigation({style,...otherProps}) {
+  return (    
+    <Navbar style={{...style}} {...otherProps}>
       <Navbar.Brand as={Link} to="/">Navbar</Navbar.Brand>
       <Nav className="mr-auto">
         <Nav.Link as={Link} to="/">Dashboard</Nav.Link>

@@ -1,19 +1,20 @@
-import React from "react";
+import React,{useContext} from "react";
 
-import { HashRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import DashboardPage from "./DashboardPage/DashboardPage";
 import Navigation from "./Navigation/Navigation";
 import Quote from "./Quote/Quote";
 import Title from "./Title/Title";
 import GalleryContainer from "./Gallery/Gallery.container";
 import ToDoAppContainer from "./TodoApp/Containerized/TodoApp.Container";
-import {ThemeProvider} from './Context/Theme';
+import {ThemeContext} from './Context/Theme';
+import {ThemeDropDown} from './DropDown/ThemeDropDown';
 
-function AppRouter() {   
+function AppRouter() { 
+  const {currentTheme} = useContext(ThemeContext);
   return (
     <Router>
-      <ThemeProvider>
-        <Navigation />
+        <Navigation style={{backgroundColor: currentTheme}} variant="dark" />
 
         <Switch>
           {/* <Route component={DashboardPage} /> */}
@@ -39,9 +40,10 @@ function AppRouter() {
             <DashboardPage />
           </Route>
         </Switch>
-
         
-      </ThemeProvider>
+        <footer className="mt-3 text-center" style={{backgroundColor: currentTheme}}>
+          <ThemeDropDown className="bg-white d-inline my-3" title="Select current theme"/>
+        </footer>
       
       {/* In order to pass props to a component being rendered by React Router, you
       need to use its render props : https://reacttraining.com/react-router/web/api/Route/render-func */}

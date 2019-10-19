@@ -2,14 +2,7 @@ import React from "react";
 import { Form, Button,Tabs,Tab } from "react-bootstrap";
 import LoadPicture from "../../Picture/LoadPicture";
 import {ThemeContext} from '../../Context/Theme';
-
-/*
-const AVAILABLE_PICTURES = [
-  "welcome-heart.jpg",
-  "welcome-keep-calm.jpg",
-  "welcome-sky.jpg",
-  "welcome-team.jpg",
-];*/
+import {ThemedButton} from '../../Button/ThemedButton'
 
 function GalleryItemForm({
   formItem,
@@ -81,19 +74,8 @@ function GalleryItemForm({
         />
       </Form.Group>
       {/* Consume ThemeContext */}
-      <ThemeContext.Consumer>
-        { ({currentTheme}) => {
-          return (
-            <Button variant={currentTheme} type="submit" onSubmit={onSubmitEvent}>
-              Save
-            </Button>
-          )
-        }
-        
-       }
-        
-      </ThemeContext.Consumer>
-      
+      <ThemedButton variant="outline-dark" type="submit" onSubmit={onSubmitEvent} text="Save" />
+ 
     </Form>
   );
 }

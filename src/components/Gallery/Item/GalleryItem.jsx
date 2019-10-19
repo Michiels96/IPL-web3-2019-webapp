@@ -2,6 +2,7 @@ import React from "react";
 import { Row,Col,Button } from "react-bootstrap";
 import Picture from "../../Picture/Picture";
 import Description from "../../Description/Description";
+import {ThemedButton} from "../../Button/ThemedButton"
 
 function GalleryItem({
     id,
@@ -20,23 +21,22 @@ function GalleryItem({
             <Picture picture={picture} /> 
             <Description id={id} description={description} setExistingItemText={setExistingItemText} />
             <Col className="col text-center">
-                <Button
-                id="save_item"
-                variant="btn btn-outline-dark"
-                className="m-2"
-                onClick={onSaveEvent}                
-                >
-                Save
-                </Button>
-
-                <Button
-                    id="delete_item"
-                    variant="btn btn-outline-dark"
+                <ThemedButton 
+                    id="save_item"
+                    variant="outline-dark"
                     className="m-2"
-                    onClick={onDeleteEvent}                    
-                >
-                    Delete
-                </Button>
+                    onClick={onSaveEvent}
+                    text="Save"
+                />           
+            
+
+                <ThemedButton 
+                    id="delete_item"
+                    variant="outline-dark"
+                    className="m-2"
+                    onClick={onDeleteEvent} 
+                    text="Delete" />
+
           </Col>
         
          
