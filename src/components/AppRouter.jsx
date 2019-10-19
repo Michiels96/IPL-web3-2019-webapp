@@ -1,6 +1,6 @@
 import React from "react";
 
-import { HashRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import DashboardPage from "./DashboardPage/DashboardPage";
 import Navigation from "./Navigation/Navigation";
 import Quote from "./Quote/Quote";
