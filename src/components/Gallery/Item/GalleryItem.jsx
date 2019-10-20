@@ -17,7 +17,7 @@ function GalleryItem({
     const onSaveEvent = (e) => updateItem(id);
   
     return (
-        <Row className="m-2 justify-content-start border border-dark rounded-lg">
+        <Row className="m-3 justify-content-start border border-dark rounded-lg">
             <Picture picture={picture} /> 
             <Description id={id} description={description} setExistingItemText={setExistingItemText} />
             <Col className="col text-center">

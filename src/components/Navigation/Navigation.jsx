@@ -4,8 +4,8 @@ import { Nav, Navbar} from "react-bootstrap";
 
 function Navigation({style,...otherProps}) {
   return (    
-    <Navbar style={{...style}} {...otherProps}>
-      <Navbar.Brand as={Link} to="/">Navbar</Navbar.Brand>
+    <Navbar style={{...style}} {...otherProps} expand="sm">
+      <Navbar.Brand as={Link} to="/" className="ml-3">Navbar</Navbar.Brand>
       <Nav className="mr-auto">
         <Nav.Link as={Link} to="/">Dashboard</Nav.Link>
         <Nav.Link as={Link} to="/quote">Quote</Nav.Link>
