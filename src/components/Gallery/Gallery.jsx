@@ -1,7 +1,6 @@
 import React from "react";
 import GalleryItem from "./Item/GalleryItem";
 import GalleryItemForm from "./Form/GalleryItemForm";
-//Bootstrap containers
 import { Container } from "react-bootstrap";
 //Bootstrap CSS : https://react-bootstrap.github.io/getting-started/introduction
 import "bootstrap/dist/css/bootstrap.min.css";

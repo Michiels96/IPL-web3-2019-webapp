@@ -1,204 +1,185 @@
 import React from "react";
 import Gallery from "./Gallery";
 
-const gallery_api_URL= "http://localhost:8080/gallery/";
+
 // Understanding CORS Ajax issues : https://stackoverflow.com/questions/21854516/understanding-ajax-cors-and-security-considerations
 // & https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
-//Check Proxying API Requests in Development :
+
+// Check Proxying API Requests in Development :
 // https://create-react-app.dev/docs/proxying-api-requests-in-development
-//const gallery_api_URL="/api/gallery/";
+
+
+const GALLERY_API_URL = "/api/gallery/";
 
 const DEFAULT_ITEMS = [
-  {
-    picture: "welcome-keep-calm.jpg",
-    description: "This picture is one among..."
-  },
-  {
-    picture: "",
-    description: "",
-  }
+    {
+        picture: "welcome-keep-calm.jpg",
+        description: "This picture is one among..."
+    },
+    {
+        picture: "",
+        description: "",
+    }
 ];
 
 class GalleryContainer extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      items: [],
-      formItem: {
-        picture: "",
-        externalPicture:"",
-        description: "",
-      }
-    };
+    constructor() {
+        super();
+        this.state = {
+            items: [],
+            formItem: {
+                picture: "",
+                externalPicture: "",
+                description: "",
+            }
+        };
 
-    this.setNewItemText = this.setNewItemText.bind(this);
-    this.setExistingItemText = this.setExistingItemText.bind(this);
-    this.setNewItemPicture = this.setNewItemPicture.bind(this);
-    this.setNewItemExternalPicture = this.setNewItemExternalPicture.bind(this);
-    this.saveNewItem = this.saveNewItem.bind(this);
-    this.removeItem = this.removeItem.bind(this);
-    this.updateItem = this.updateItem.bind(this);
-  }
+        this.setNewItemText = this.setNewItemText.bind(this);
+        this.setExistingItemText = this.setExistingItemText.bind(this);
+        this.setNewItemPicture = this.setNewItemPicture.bind(this);
+        this.setNewItemExternalPicture = this.setNewItemExternalPicture.bind(this);
+        this.saveNewItem = this.saveNewItem.bind(this);
+        this.removeItem = this.removeItem.bind(this);
+        this.updateItem = this.updateItem.bind(this);
+    }
 
-  render() {
-    console.log("render:",this.state.items);
-    return (
-      <Gallery
-        items={this.state.items}
-        formItem={this.state.formItem}
-        setNewItemText={this.setNewItemText}
-        setExistingItemText={this.setExistingItemText}
-        setNewItemPicture={this.setNewItemPicture}
-        setNewItemExternalPicture={this.setNewItemExternalPicture}
-        saveNewItem={this.saveNewItem}
-        removeItem={this.removeItem}
-        updateItem={this.updateItem}
-      />
-    );
-  }
+    render() {
+        return (
+            <Gallery
+                items={this.state.items}
+                formItem={this.state.formItem}
+                setNewItemText={this.setNewItemText}
+                setExistingItemText={this.setExistingItemText}
+                setNewItemPicture={this.setNewItemPicture}
+                setNewItemExternalPicture={this.setNewItemExternalPicture}
+                saveNewItem={this.saveNewItem}
+                removeItem={this.removeItem}
+                updateItem={this.updateItem}
+            />
+        );
+    }
 
-  async componentDidMount() {
-    try {
-      const items = await this.loadItems();
-      if (items!==undefined)
+    async componentDidMount() {
+        this.loadItems();
+    }
+
+    loadItems() {
+        fetch(GALLERY_API_URL)
+            .then(response => response.json())
+            .then(data => {
+                this.setState({items: data});
+            })
+            .catch(err => console.error("[GalleryContainer] Error when fetching gallery API:", err));
+    }
+
+    setNewItemText(newValue) {
+        console.log("GalleryContainer::setNewItemText", newValue);
+
+        const {formItem} = this.state;
+
+        const newFormItem = {
+            ...formItem,
+            description: newValue
+        };
+
         this.setState({
-          items: items
+            formItem: newFormItem
         });
-    } catch (err) {
-      console.error("Error in comonentDidMount:", err);
     }
-  }
 
-  loadItems() {
-    console.log("loadItems");
+    setExistingItemText(itemId, newValue) {
+        console.log("GalleryContainer::setExistingItemText", itemId, newValue);
 
-    fetch(gallery_api_URL)
-      .then(response => response.json())
-      .then(data => {
-        this.setState({ items: data });        
-      })
-      .catch(err => console.error("Error when fetching gallery API:", err));
-
-
-    // return new Promise((resolve, reject) => {
-    //   resolve(DEFAULT_ITEMS);
-    // });
-  }
-
-  setNewItemText(newValue) {
-    console.log("GalleryContainer::setNewItemText", newValue);
-
-    const { formItem } = this.state;
-    
-    const newFormItem = {
-      ...formItem,
-      description: newValue
+        this._updateItemProperties(itemId, {description: newValue});
     }
-    this.setState({
-      formItem: newFormItem
-    });
-  }
 
-  setExistingItemText(item_id, newValue) {
-    console.log("GalleryContainer::setExistingItemText",newValue);
+    _updateItemProperties(itemId, newProperties) {
+        //using https://github.com/immerjs/immer would be much more easier
+        const {items} = this.state;
+        const newItems = items.map((item, index) => {
+            // currently itemId is index in array
+            if (index !== itemId) return item; // this is not the item we care about, return unchanged
+            return {
+                ...item,
+                ...newProperties,
+            };
+        });
+        this.setState({items: newItems})
+    }
 
-    //const { items } = this.state;
-    
-    const updatedItems = [
-      ...this.state.items,
-    ]
+    setNewItemPicture(newValue) {
+        console.log("GalleryContainer::setNewItemPicture", newValue);
 
-    // Currently the id is directly the item index in this.state.items
-    const index_found = item_id;
-    //Since the state is based on the previous state, we need to use a callback
-    //to ensure that we use the previous state
-    if (index_found > -1) {
-      updatedItems[index_found].description = newValue;
-      this.setState(state => {  
-        return {
-          items:updatedItems,
+        const newFormItem = {...this.state.formItem};
+        newFormItem.picture = newValue;
+        this.setState({
+            formItem: newFormItem
+        });
+    }
+
+    setNewItemExternalPicture(newValue) {
+        console.log("GalleryContainer::setNewItemExternalPicture", newValue);
+
+        const newFormItem = {...this.state.formItem};
+        newFormItem.externalPicture = newValue;
+        this.setState({
+            formItem: newFormItem
+        });
+    }
+
+    saveNewItem() {
+        this._addFormItemToItems();
+        this._resetFormItem();
+    }
+
+    _addFormItemToItems() {
+        const {items} = this.state;
+        const newItem = {...this.state.formItem};
+        newItem.picture = newItem.externalPicture !== "" ? newItem.externalPicture : newItem.picture;
+
+        this.setState({
+            items: [
+                ...items,
+                newItem,
+            ]
+        });
+    }
+
+    _resetFormItem() {
+        const freshFormItem = {
+            picture: "",
+            externalPicture: "",
+            description: "",
         };
-      });
+        this.setState({formItem: freshFormItem});
     }
 
-  }
+    removeItem(itemId) {
+        const {items} = this.state;
+        // Currently the id is directly the item index in this.state.items
+        const indexFound = itemId;
 
-  setNewItemPicture(newValue) {
-    const formItem = {...this.state.formItem};
-    formItem.picture = newValue;
-    console.log("GalleryContainer::setNewItemPicture", newValue);
-    this.setState({
-      formItem: formItem
-    });
-  }
+        if (indexFound < 0) {
+            return;
+        }
 
-  setNewItemExternalPicture(newValue) {
-    const formItem = {...this.state.formItem};
-    formItem.externalPicture = newValue;
-    console.log("GalleryContainer::setNewItemExternalPicture", newValue);
-    this.setState({
-      formItem: formItem
-    });
-  }
+        const newItems = [
+            ...items.slice(0, indexFound),
+            ...items.slice(indexFound + 1),
+        ];
 
-  saveNewItem() {
-
-    // Prepare the reset of the state for the formItem
-    console.log("VER£Y Prior to update... ", this.state.formItem);
-    const formItem = {...this.state.formItem};
-    formItem.picture = "";
-    formItem.externalPicture ="";
-    formItem.description = "";
-
-    //https://apod.nasa.gov/apod/image/1907/SpotlessSunIss_Colacurcio_2048.jpg
-
-
-    //Since the state is based on the previous state, we need to use a callback
-    //to ensure that we use the previous state    
-    this.setState(state =>{
-      //const items_updated = state.items.concat({...state.formItem});
-      // use formItem.externalPicture if it is not empty, else use formItem.picture
-      const picture = state.formItem.externalPicture !== "" ? state.formItem.externalPicture : state.formItem.picture;
-      const items_updated = [...state.items,{picture:picture, description:state.formItem.description} ];
-      console.log("Prior to update... ", items_updated);
-      return {
-        items:items_updated,
-        formItem:formItem,
-      }
-    })
-
-
-     
-
-  
-
-  }
-
-  removeItem(item_id) {
-    // Currently the id is directly the item index in this.state.items
-    const index_found = item_id;
-    // retrieve the item in the state based on the id
-    // const index_found = this.state.items.findIndex(item => {
-    //   return item.id == current_id;
-    // });
- 
-    //Since the state is based on the previous state, we need to use a callback
-    //to ensure that we use the previous state
-    if (index_found > -1) {
-      this.setState(state => {
-        // don't mutate the original state.data arrow, so use slice & concat()
-        const items_updated = state.items.slice(0, index_found).concat(state.items.slice(index_found+1));
-        return {
-          items:items_updated,
-        };
-      });
+        this.setState({items: newItems});
     }
-    
 
-  }
-  updateItem(item_id) {
-    console.log("Make call to API for element with id:",item_id," .Update with", this.state.items[item_id]);
-  }
+    updateItem(itemId) {
+        const { items } = this.state;
+        // Currently the id is directly the item index in this.state.items
+        const indexFound = itemId;
+        const item = items[indexFound];
+
+        console.log("Make call to API for element with id:", itemId, " .Update with", item);
+    }
+
 }
 
 export default GalleryContainer;
