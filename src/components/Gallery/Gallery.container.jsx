@@ -1,22 +1,24 @@
 import React from "react";
 import Gallery from "./Gallery";
 
-//const gallery_api_URL= "http://localhost:8080/gallery/";
 // Understanding CORS Ajax issues : https://stackoverflow.com/questions/21854516/understanding-ajax-cors-and-security-considerations
 // & https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
-//Check Proxying API Requests in Development :
+
+// Check Proxying API Requests in Development :
 // https://create-react-app.dev/docs/proxying-api-requests-in-development
-const GALLERY_API_URL="/api/gallery/";
+
+
+const GALLERY_API_URL = "/api/gallery/";
 
 const DEFAULT_ITEMS = [
-  {
-    picture: "welcome-keep-calm.jpg",
-    description: "This picture is one among..."
-  },
-  {
-    picture: "",
-    description: "",
-  }
+    {
+        picture: "welcome-keep-calm.jpg",
+        description: "This picture is one among..."
+    },
+    {
+        picture: "",
+        description: "",
+    }
 ];
 
 const AVAILABLE_PICTURES = [
@@ -67,88 +69,73 @@ class GalleryContainer extends React.Component {
       />
     );
   }
-
-  async componentDidMount() {
-    try {
-      const items = await this.loadItems();
-      if (items!==undefined)
-        this.setState({
-          items: items
-        });
-    } catch (err) {
-      console.error("Error in comonentDidMount:", err);
+    async componentDidMount() {
+        this.loadItems();
     }
-  }
 
-  loadItems() {
-    console.log("loadItems");
-
-    fetch(GALLERY_API_URL)
-      .then(response => response.json())
-      .then(data => {
-        this.setState({ items: data });        
-      })
-      .catch(err => console.error("Error when fetching gallery API:", err));
-  }
-
-  setNewItemText(newValue) {
-    console.log("GalleryContainer::setNewItemText", newValue);
-
-    const { formItem } = this.state;
-    
-    const newFormItem = {
-      ...formItem,
-      description: newValue
+    loadItems() {
+        fetch(GALLERY_API_URL)
+            .then(response => response.json())
+            .then(data => {
+                this.setState({items: data});
+            })
+            .catch(err => console.error("[GalleryContainer] Error when fetching gallery API:", err));
     }
-    this.setState({
-      formItem: newFormItem
-    });
-  }
 
-  setExistingItemText(item_id, newValue) {
-    console.log("GalleryContainer::setExistingItemText",newValue);
+    setNewItemText(newValue) {
+        console.log("GalleryContainer::setNewItemText", newValue);
 
-    const { items } = this.state;
-    
-    const updatedItems = [
-      ...items
-    ]
+        const {formItem} = this.state;
 
-    
-    const indexFound = items.findIndex(item => {
-      return item._id === item_id;
-    });
-
-      
-    //Since the state is based on the previous state, we need to use a callback
-    //to ensure that we use the previous state
-    if (indexFound > -1) {
-      updatedItems[indexFound].description = newValue;
-      this.setState(state => {  
-        return {
-          items:updatedItems,
+        const newFormItem = {
+            ...formItem,
+            description: newValue
         };
-      });
-    }  
-  }
 
-  setNewItemPicture(newValue) {
-    const formItem = {...this.state.formItem};
-    formItem.picture = newValue;
-    console.log("GalleryContainer::setNewItemPicture", newValue);
-    this.setState({
-      formItem: formItem
-    });
-  }
+        this.setState({
+            formItem: newFormItem
+        });
+    }
 
-  setNewItemExternalPicture(newValue) {
-    const formItem = {...this.state.formItem};
-    formItem.externalPicture = newValue;
-    console.log("GalleryContainer::setNewItemExternalPicture", newValue);
-    this.setState({
-      formItem: formItem
-    });
-  }
+    setExistingItemText(itemId, newValue) {
+        console.log("GalleryContainer::setExistingItemText", itemId, newValue);
+
+        this._updateItemProperties(itemId, {description: newValue});
+    }
+
+    _updateItemProperties(itemId, newProperties) {
+        //using https://github.com/immerjs/immer would be much more easier
+        const {items} = this.state;
+        const newItems = items.map((item, index) => {
+            // currently itemId is index in array
+            if (index !== itemId) return item; // this is not the item we care about, return unchanged
+            return {
+                ...item,
+                ...newProperties,
+            };
+        });
+        this.setState({items: newItems})
+    }
+
+    setNewItemPicture(newValue) {
+        console.log("GalleryContainer::setNewItemPicture", newValue);
+
+        const newFormItem = {...this.state.formItem};
+        newFormItem.picture = newValue;
+        this.setState({
+            formItem: newFormItem
+        });
+    }
+
+    setNewItemExternalPicture(newValue) {
+        console.log("GalleryContainer::setNewItemExternalPicture", newValue);
+
+        const newFormItem = {...this.state.formItem};
+        newFormItem.externalPicture = newValue;
+        this.setState({
+            formItem: newFormItem
+        });
+    }
 
   setNewItemInternalPicture(newValue) {
     const newFormItem = {...this.state.formItem};//Shallow copy
@@ -160,81 +147,94 @@ class GalleryContainer extends React.Component {
   }
 
   async saveNewItem() {
-    const {formItem} = this.state;
-    // use formItem.internalPicture if it is not empty, else use formItem.externalPicture, else use formItem.picture    
-    let picture = formItem.internalPicture || formItem.externalPicture || formItem.picture;
-    //in case there were no change event (no picture selected), set the picture to default value
-    if (picture ==="")
-      picture = AVAILABLE_PICTURES[0];
-      
-    const itemToSave = {picture:picture,
-                        description:formItem.description,
-                      };
-
     try{
-    console.log("GalleryContainer::saveNewItem :",itemToSave);
-    const response = await fetch(GALLERY_API_URL,{
-      method: "POST",
-      body: JSON.stringify(itemToSave), // data can be `string` or {object}!
-      headers: {
-        "Content-Type": "application/json"
-        }
-      });
-    const result = await response.json();
-    //const items_updated = state.items.concat({...state.formItem});      
-    const items_updated = [...this.state.items,
-      {...result} ];
-
-    this.setState({   
-        items:items_updated,
-        formItem:{
-          picture: "",
-          externalPicture:"",
-          internalPicture:"",
-          description: "",
-        },      
-    })  
-
+      const newItem = await this._postNewItem()
+      this._addFormItemToItems(newItem);
+      this._resetFormItem();
     }
     catch(err){
       console.error("saveNewItem : Error when fetching gallery API :", err);
       alert("Your item has not been recorded into the DB. Error when contacting the API : ",err);
     }
+
+  }
+
+  async _postNewItem(){
+    const {items} = this.state;
+    const newItem = {...this.state.formItem};
+    newItem.picture = newItem.internalPicture || newItem.externalPicture || newItem.picture; 
+    
+    try{
+      console.log("GalleryContainer::saveNewItem :",newItem);
+      const response = await fetch(GALLERY_API_URL,{
+        method: "POST",
+        body: JSON.stringify(newItem), 
+        headers: {
+          "Content-Type": "application/json"
+          }
+        });
+      return await response.json(); 
+      }
+      catch(err){
+        throw Error(err);  
+      }
+  }
+
+  _addFormItemToItems(newItem) {
+     /* const {items} = this.state;
+      const newItem = {...this.state.formItem};
+      newItem.picture = newItem.internalPicture || newItem.externalPicture || newItem.picture; */
+
+      this.setState({
+          items: [
+              ...items,
+              newItem,
+          ]
+      });
+  }
+
+  _resetFormItem() {
+      const freshFormItem = {
+          picture: "",
+          externalPicture: "",
+          description: "",
+      };
+      this.setState({formItem: freshFormItem});
   }
 
   async removeItem(item_id) {
     // retrieve the item in the state based on the id
-    console.log("delete:",item_id);
-    const indexFound = this.state.items.findIndex(item => {
+    const {items} = this.state;
+    
+    const indexFound = items.findIndex(item => {
       return item._id === item_id;
     });
    
-    //Since the state is based on the previous state, we need to use a callback
-    //to ensure that we use the previous state
-    if (indexFound > -1) {
-      try{
-        console.log("GalleryContainer::removeItem :",item_id);
-        let response = await fetch(GALLERY_API_URL+item_id,{
-          method: "delete",          
-          });
-        let result = await response.json();
-
-        this.setState(state => {
-          // don't mutate the original state.data arrow, so use slice & concat()
-          const items_updated = state.items.slice(0, 
-            indexFound).concat(state.items.slice(indexFound+1));
-          return {
-            items:items_updated,
-          };
+    if (indexFound < 0) {
+      return;
+    }   
+    try{
+      console.log("GalleryContainer::removeItem :",item_id);
+      let response = await fetch(GALLERY_API_URL+item_id,{
+        method: "delete",          
         });
+      let result = await response.json();
+        
+      const newItems = [
+          ...items.slice(0, indexFound),
+          ...items.slice(indexFound + 1),
+      ];
 
-        }
-        catch(err){
-          console.error("deleteItem : Error when fetching gallery API :", err);
-          alert("Your item has not been deleted from the DB. Error when contacting the API : ",err);
-        }     
-    }
+      this.setState({items: newItems});
+
+
+      }
+      catch(err){
+        console.error("deleteItem : Error when fetching gallery API :", err);
+        alert("Your item has not been deleted from the DB. Error when contacting the API : ",err);
+      } 
   }
+  
   async updateItem(item_id) {
     console.log("Make call to API for element with id:",item_id," .Update with", this.state.items[item_id]);
     // retrieve the item in the state based on the id
@@ -242,26 +242,30 @@ class GalleryContainer extends React.Component {
       return item._id === item_id;
     });
 
-    if (indexFound > -1) {
-      try{
-        const updatedItems = [
-          ...this.state.items
-        ]
-        console.log("GalleryContainer::updateItem :",item_id);
-        const response = await fetch(GALLERY_API_URL+item_id,{
-          method: "PUT", 
-          body: JSON.stringify( updatedItems[indexFound]), // data can be `string` or {object}!
-          headers: {
-            "Content-Type": "application/json"
-          }         
-          });
-        const result = await response.json();
-        }
-        catch(err){
-          console.error("updateItem : Error when fetching gallery API :", err);
-          alert("Your item has not been updated in the DB. Error when contacting the API : ",err);
-        }     
+    if (indexFound < 0) {
+      return;
     }
+
+  
+    try{
+      const updatedItems = [
+        ...this.state.items
+      ]
+      console.log("GalleryContainer::updateItem :",item_id);
+      const response = await fetch(GALLERY_API_URL+item_id,{
+        method: "PUT", 
+        body: JSON.stringify( updatedItems[indexFound]), // data can be `string` or {object}!
+        headers: {
+          "Content-Type": "application/json"
+        }         
+        });
+      const result = await response.json();
+      }
+      catch(err){
+        console.error("updateItem : Error when fetching gallery API :", err);
+        alert("Your item has not been updated in the DB. Error when contacting the API : ",err);
+      }     
+    
   }
 }
 

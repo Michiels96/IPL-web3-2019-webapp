@@ -2,15 +2,20 @@ import React from 'react'
 
 import './Quote.css'
 
-
-
-function Quote(props) {
-  return (
-    <p>
-      <q>{props.message}</q>
-      <small><i>{props.author}</i></small>
-    </p>
-  )
+function Quote({
+                   author,
+                   message,
+               }) {
+    return (
+        <p>
+            <q>{message}</q>
+            <small>
+                <i>
+                    {author}
+                </i>
+            </small>
+        </p>
+    )
 }
 
 export default Quote;
