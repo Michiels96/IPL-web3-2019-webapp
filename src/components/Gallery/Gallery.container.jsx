@@ -106,9 +106,8 @@ class GalleryContainer extends React.Component {
     _updateItemProperties(itemId, newProperties) {
         //using https://github.com/immerjs/immer would be much more easier
         const {items} = this.state;
-        const newItems = items.map((item, index) => {
-            // currently itemId is index in array
-            if (index !== itemId) return item; // this is not the item we care about, return unchanged
+        const newItems = items.map((item) => {
+            if (item._id !== itemId) return item; // this is not the item we care about, return unchanged
             return {
                 ...item,
                 ...newProperties,
@@ -154,7 +153,7 @@ class GalleryContainer extends React.Component {
     }
     catch(err){
       console.error("saveNewItem : Error when fetching gallery API :", err);
-      alert("Your item has not been recorded into the DB. Error when contacting the API : ",err);
+      alert("Your item has not been recorded into the DB. Error when contacting the API : "+ err);
     }
 
   }
@@ -176,15 +175,12 @@ class GalleryContainer extends React.Component {
       return await response.json(); 
       }
       catch(err){
-        throw Error(err);  
+        throw new Error(err);  
       }
   }
 
   _addFormItemToItems(newItem) {
-     /* const {items} = this.state;
-      const newItem = {...this.state.formItem};
-      newItem.picture = newItem.internalPicture || newItem.externalPicture || newItem.picture; */
-
+      const {items} = this.state;
       this.setState({
           items: [
               ...items,
@@ -231,10 +227,10 @@ class GalleryContainer extends React.Component {
       }
       catch(err){
         console.error("deleteItem : Error when fetching gallery API :", err);
-        alert("Your item has not been deleted from the DB. Error when contacting the API : ",err);
+        alert("Your item has not been deleted from the DB. Error when contacting the API : " + err);
       } 
   }
-  
+
   async updateItem(item_id) {
     console.log("Make call to API for element with id:",item_id," .Update with", this.state.items[item_id]);
     // retrieve the item in the state based on the id
@@ -246,7 +242,6 @@ class GalleryContainer extends React.Component {
       return;
     }
 
-  
     try{
       const updatedItems = [
         ...this.state.items
@@ -259,11 +254,11 @@ class GalleryContainer extends React.Component {
           "Content-Type": "application/json"
         }         
         });
-      const result = await response.json();
+      const result = await response.json();   
       }
       catch(err){
         console.error("updateItem : Error when fetching gallery API :", err);
-        alert("Your item has not been updated in the DB. Error when contacting the API : ",err);
+        alert("Your item has not been updated in the DB. Error when contacting the API : "+ err);
       }     
     
   }
