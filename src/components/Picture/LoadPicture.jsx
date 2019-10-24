@@ -1,32 +1,33 @@
 import React from "react";
 import { Image, Col } from "react-bootstrap";
+const MAX_SIZE=1048576;
 
 const LoadPicture = ({setNewItemInternalPicture}) => {
    let labelFileInput = React.createRef(); 
    const handleOnChange = (e) => {
+    const fileToLoad = e.target.files[0];
     // check that the MIME type is OK : JPEG or PNG or ? at the end of the string($), case insensitive (/i):/(jpeg|png)$/i
-    // to be mor global, look for image in the MIME type : image at the beginning of the string (^)
-    if(e.target.files[0].type.match(/^(image)/i))
+    // to be more global, look for image in the MIME type : image at the beginning of the string (^)
+    if(fileToLoad.type.match(/^(image)/i))
       {      
       var reader  = new FileReader();
       // only allow to load a picture if this is < 1MB
-      if (e.target.files[0].size <= 1048576)
+      if (fileToLoad.size <= MAX_SIZE)
         {
         // set the label to the file name (https://reactjs.org/docs/refs-and-the-dom.html)
-        labelFileInput.current.innerText=e.target.files[0].name;
-
-        reader.onload = function () {   
-        setNewItemInternalPicture(reader.result);  
-        }        
+        labelFileInput.current.innerText=fileToLoad.name;
+        
+        reader.onload = (e) => setNewItemInternalPicture(e.target.result); 
+        
         /*The readAsDataURL method is used to read the contents of the 
         specified Blob or File. When the read operation is finished, 
         the readyState becomes DONE, and the loadend is triggered. 
         At that time, the result attribute contains the data as a 
         data: URL representing the file's data as a base64 encoded string.*/
-        reader.readAsDataURL(e.target.files[0]);
+        reader.readAsDataURL(fileToLoad);
         }
     else{
-        alert("Your image is too large ("+ e.target.files[0].size / 1048576 + " MB). Please upload an image < 1MB." );
+        alert("Your image is too large ("+ fileToLoad.size / MAX_SIZE + " MB). Please upload an image < 1MB." );
     }
     }   
   }

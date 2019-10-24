@@ -6,7 +6,7 @@ import Gallery from "./Gallery";
 // & https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
 //Check Proxying API Requests in Development :
 // https://create-react-app.dev/docs/proxying-api-requests-in-development
-const gallery_api_URL="/api/gallery/";
+const GALLERY_API_URL="/api/gallery/";
 
 const DEFAULT_ITEMS = [
   {
@@ -63,7 +63,7 @@ class GalleryContainer extends React.Component {
         saveNewItem={this.saveNewItem}
         removeItem={this.removeItem}
         updateItem={this.updateItem}
-        available_pictures={AVAILABLE_PICTURES}
+        availablePictures={AVAILABLE_PICTURES}
       />
     );
   }
@@ -83,7 +83,7 @@ class GalleryContainer extends React.Component {
   loadItems() {
     console.log("loadItems");
 
-    fetch(gallery_api_URL)
+    fetch(GALLERY_API_URL)
       .then(response => response.json())
       .then(data => {
         this.setState({ items: data });        
@@ -111,29 +111,25 @@ class GalleryContainer extends React.Component {
     const { items } = this.state;
     
     const updatedItems = [
-      ...this.state.items
+      ...items
     ]
 
     
-    const index_found = this.state.items.findIndex(item => {
+    const indexFound = items.findIndex(item => {
       return item._id === item_id;
     });
 
-    console.log("Index:",index_found);
-    
+      
     //Since the state is based on the previous state, we need to use a callback
     //to ensure that we use the previous state
-    if (index_found > -1) {
-      updatedItems[index_found].description = newValue;
-      console.log("updated items... : ",updatedItems);
+    if (indexFound > -1) {
+      updatedItems[indexFound].description = newValue;
       this.setState(state => {  
         return {
           items:updatedItems,
         };
       });
-    }
-    console.log("state:",this.state.items);
-  
+    }  
   }
 
   setNewItemPicture(newValue) {
@@ -155,50 +151,49 @@ class GalleryContainer extends React.Component {
   }
 
   setNewItemInternalPicture(newValue) {
-    const formItem = {...this.state.formItem};
+    const newFormItem = {...this.state.formItem};//Shallow copy
     formItem.internalPicture = newValue;
     console.log("GalleryContainer::setNewItemInternalPicture", newValue);
     this.setState({
-      formItem: formItem
+      formItem: newFormItem
     });
   }
 
   async saveNewItem() {
-    const formItem = {...this.state.formItem};
+    const {formItem} = this.state;
     // use formItem.internalPicture if it is not empty, else use formItem.externalPicture, else use formItem.picture    
     let picture = formItem.internalPicture || formItem.externalPicture || formItem.picture;
     //in case there were no change event (no picture selected), set the picture to default value
     if (picture ==="")
       picture = AVAILABLE_PICTURES[0];
       
-    const item = {picture:picture,description:formItem.description};
+    const itemToSave = {picture:picture,
+                        description:formItem.description,
+                      };
 
     try{
     console.log("GalleryContainer::saveNewItem :",item);
-    let response = await fetch(gallery_api_URL,{
+    const response = await fetch(GALLERY_API_URL,{
       method: "POST",
-      body: JSON.stringify(item), // data can be `string` or {object}!
+      body: JSON.stringify(itemToSave), // data can be `string` or {object}!
       headers: {
         "Content-Type": "application/json"
         }
       });
-    let result = await response.json();
-    //Since the state is based on the previous state, we need to use a callback
-    //to ensure that we use the previous state (else formItem.picture, when no picture is selected, has not the right value)
-    this.setState(state =>{
-      // Prepare the reset of the state for the formItem    
-      formItem.picture = "";
-      formItem.externalPicture ="";
-      formItem.internalPicture ="";
-      formItem.description = "";
-      //const items_updated = state.items.concat({...state.formItem});      
-      const items_updated = [...state.items,
-        {...result} ];
-      return {
+    const result = await response.json();
+    //const items_updated = state.items.concat({...state.formItem});      
+    const items_updated = [...state.items,
+      {...result} ];
+
+    this.setState({   
         items:items_updated,
-        formItem:formItem,
-      }
-    })   
+        formItem:{
+          picture: "",
+          externalPicture:"",
+          internalPicture:"",
+          description: "",
+        },      
+    })  
 
     }
     catch(err){
@@ -210,23 +205,24 @@ class GalleryContainer extends React.Component {
   async removeItem(item_id) {
     // retrieve the item in the state based on the id
     console.log("delete:",item_id);
-    const index_found = this.state.items.findIndex(item => {
+    const indexFound = this.state.items.findIndex(item => {
       return item._id === item_id;
     });
    
     //Since the state is based on the previous state, we need to use a callback
     //to ensure that we use the previous state
-    if (index_found > -1) {
+    if (indexFound > -1) {
       try{
         console.log("GalleryContainer::removeItem :",item_id);
-        let response = await fetch(gallery_api_URL+item_id,{
+        let response = await fetch(GALLERY_API_URL+item_id,{
           method: "delete",          
           });
         let result = await response.json();
 
         this.setState(state => {
           // don't mutate the original state.data arrow, so use slice & concat()
-          const items_updated = state.items.slice(0, index_found).concat(state.items.slice(index_found+1));
+          const items_updated = state.items.slice(0, 
+            indexFound).concat(state.items.slice(indexFound+1));
           return {
             items:items_updated,
           };
@@ -242,24 +238,24 @@ class GalleryContainer extends React.Component {
   async updateItem(item_id) {
     console.log("Make call to API for element with id:",item_id," .Update with", this.state.items[item_id]);
     // retrieve the item in the state based on the id
-    const index_found = this.state.items.findIndex(item => {
+    const indexFound = this.state.items.findIndex(item => {
       return item._id === item_id;
     });
 
-    if (index_found > -1) {
+    if (indexFound > -1) {
       try{
         const updatedItems = [
           ...this.state.items
         ]
         console.log("GalleryContainer::updateItem :",item_id);
-        let response = await fetch(gallery_api_URL+item_id,{
+        const response = await fetch(GALLERY_API_URL+item_id,{
           method: "PUT", 
-          body: JSON.stringify( updatedItems[index_found]), // data can be `string` or {object}!
+          body: JSON.stringify( updatedItems[indexFound]), // data can be `string` or {object}!
           headers: {
             "Content-Type": "application/json"
           }         
           });
-        let result = await response.json();
+        const result = await response.json();
         }
         catch(err){
           console.error("updateItem : Error when fetching gallery API :", err);

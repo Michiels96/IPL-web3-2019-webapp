@@ -18,7 +18,7 @@ function GalleryItemForm({
   setNewItemExternalPicture,
   setNewItemInternalPicture,
   saveNewItem,
-  available_pictures,
+  availablePictures,
 }) {
   const onDescriptionChangeEvent = e => setNewItemText(e.target.value);
   const onExternalPictureChangeEvent = e => setNewItemExternalPicture(e.target.value);
