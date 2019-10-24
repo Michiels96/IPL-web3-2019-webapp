@@ -40,7 +40,7 @@ function GalleryItemForm({
               as="select"
               onChange={onPictureChangeEvent}
             >
-              {available_pictures.map(picture => {
+              {availablePictures.map(picture => {
                 return (
                   <option key={picture} value={picture}>
                     {picture}

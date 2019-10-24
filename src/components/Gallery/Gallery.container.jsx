@@ -152,7 +152,7 @@ class GalleryContainer extends React.Component {
 
   setNewItemInternalPicture(newValue) {
     const newFormItem = {...this.state.formItem};//Shallow copy
-    formItem.internalPicture = newValue;
+    newFormItem.internalPicture = newValue;
     console.log("GalleryContainer::setNewItemInternalPicture", newValue);
     this.setState({
       formItem: newFormItem
@@ -172,7 +172,7 @@ class GalleryContainer extends React.Component {
                       };
 
     try{
-    console.log("GalleryContainer::saveNewItem :",item);
+    console.log("GalleryContainer::saveNewItem :",itemToSave);
     const response = await fetch(GALLERY_API_URL,{
       method: "POST",
       body: JSON.stringify(itemToSave), // data can be `string` or {object}!
@@ -182,7 +182,7 @@ class GalleryContainer extends React.Component {
       });
     const result = await response.json();
     //const items_updated = state.items.concat({...state.formItem});      
-    const items_updated = [...state.items,
+    const items_updated = [...this.state.items,
       {...result} ];
 
     this.setState({   
