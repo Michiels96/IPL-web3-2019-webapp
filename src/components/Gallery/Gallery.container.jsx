@@ -168,9 +168,11 @@ class GalleryContainer extends React.Component {
 
   async _postNewItem(){
     const {items} = this.state;
-    const newItem = {...this.state.formItem};
+    let newItem = {...this.state.formItem};
     newItem.picture = newItem.internalPicture || newItem.externalPicture || newItem.picture; 
-    
+    if (newItem.picture==="")
+      newItem.picture=AVAILABLE_PICTURES[0];
+
     try{
       console.log("GalleryContainer::saveNewItem :",newItem);
       const response = await fetch(GALLERY_API_URL,{
