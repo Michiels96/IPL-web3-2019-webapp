@@ -85,7 +85,7 @@ class GalleryContainer extends React.Component {
             .then(data => {  
               console.log("DATA:",data) ;           
               if (data.error)
-                alert("Error:" + data.error);  
+                return alert("Error:" + data.error);  
               
               this.setState({items: data});             
             })
@@ -159,7 +159,7 @@ class GalleryContainer extends React.Component {
     try{
       const newItem = await this._postNewItem();
       if(newItem.error)
-        alert("Error:" + newItem.error);
+        return alert("Error:" + newItem.error);
         
       this._addFormItemToItems(newItem);
       this._resetFormItem();     
@@ -241,7 +241,7 @@ class GalleryContainer extends React.Component {
         });
       let result = await response.json();
       if (result.error)
-        alert("Error:" + result.error);
+        return alert("Error:" + result.error);
         
       const newItems = [
           ...items.slice(0, indexFound),
@@ -284,7 +284,7 @@ class GalleryContainer extends React.Component {
         });
       const result = await response.json(); 
       if(result.error) 
-        alert("Error:" + result.error);
+        return alert("Error:" + result.error);
 
       }
       catch(err){
