@@ -77,10 +77,10 @@ class GalleryContainer extends React.Component {
         fetch(GALLERY_API_URL)
             .then(response => response.json())
             .then(data => {              
-              if (data.success)  
-                this.setState({items: data});
-              else
-                alert("Error:" + data.error);
+              if (data.error)         
+                return alert("Error:" + data.error);
+              
+              this.setState({items: data});
             })
             .catch(err => console.error("[GalleryContainer] Error when fetching gallery API:", err));
     }
@@ -151,13 +151,13 @@ class GalleryContainer extends React.Component {
   async saveNewItem() {
     try{
       const newItem = await this._postNewItem();
-      if(newItem.success)
-        {
-        this._addFormItemToItems(newItem);
-        this._resetFormItem();
-        }
-      else
-        alert("Error:" + newItem.error);
+      if(newItem.error)        
+          return alert("Error:" + newItem.error);        
+    
+      this._addFormItemToItems(newItem);
+      this._resetFormItem();
+        
+      
     }
     catch(err){
       console.error("saveNewItem : Error when fetching gallery API :", err);
@@ -225,17 +225,18 @@ class GalleryContainer extends React.Component {
         method: "delete",          
         });
       let result = await response.json();
-      if (result.success) 
-        {
-        const newItems = [
-            ...items.slice(0, indexFound),
-            ...items.slice(indexFound + 1),
-        ];
+      if (result.error) 
+        return alert("Error:" + result.error);
+        
+      const newItems = [
+          ...items.slice(0, indexFound),
+          ...items.slice(indexFound + 1),
+      ];
 
-        this.setState({items: newItems});
-        }
-      else
-        alert("Error:" + result.error);
+      this.setState({items: newItems});
+        
+      
+        
 
 
       }
@@ -269,8 +270,8 @@ class GalleryContainer extends React.Component {
         }         
         });
       const result = await response.json(); 
-      if(!result.success) 
-        alert("Error:" + result.error);
+      if(result.error) 
+        return alert("Error:" + result.error);
       }
       catch(err){
         console.error("updateItem : Error when fetching gallery API :", err);
