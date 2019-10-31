@@ -46,7 +46,8 @@ function AppRouter() {
                 </Col>
               </Row>
             </Route>
-            <Route path="/gallery">             
+            <Route path="/gallery">
+              {!isAuthenticated() && <Redirect to="/login" />}              
               <Title>Gallery</Title>
               <GalleryContainer />
             </Route>

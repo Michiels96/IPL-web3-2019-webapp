@@ -6,8 +6,6 @@ export const ThemedButton = ({text, ...otherProps}) => {
         const {currentTheme} = useContext(ThemeContext); 
         //Style attribute: https://reactjs.org/docs/dom-elements.html#style
         const buttonStyle = {backgroundColor:currentTheme}
-        console.log("otherProps:",otherProps);
-
           return (
               
             <Button {...otherProps} style={buttonStyle}>
