@@ -7,9 +7,12 @@ export const AuthenticationContext = React.createContext({
 });
 
 export const AuthenticationProvider= ({children})=> {
-   
-    // Initialize the current JWT
-    const [JWT,setJWT] = useState("");
+    let storedJWT = localStorage.getItem("token");
+    if(storedJWT===null)
+        storedJWT="";
+    
+    // Initialize the current JWT    
+    const [JWT,setJWT] = useState(storedJWT);    
     // Initialize the context function to return authentication status
     const isAuthenticated = () => {
         return JWT !=="";
@@ -17,6 +20,7 @@ export const AuthenticationProvider= ({children})=> {
     // Initialize the context function to update the state
     const setCurrentJWT = (token) => {        
         // Update the state
+        localStorage.setItem("token",token);       
         return setJWT(token);
     }
     const providerData = {JWT,isAuthenticated,setCurrentJWT};

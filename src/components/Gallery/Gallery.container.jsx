@@ -162,10 +162,7 @@ class GalleryContainer extends React.Component {
         alert("Error:" + newItem.error);
         
       this._addFormItemToItems(newItem);
-      this._resetFormItem();
-        
-      
-        
+      this._resetFormItem();     
     }
     catch(err){
       console.error("saveNewItem : Error when fetching gallery API :", err);
