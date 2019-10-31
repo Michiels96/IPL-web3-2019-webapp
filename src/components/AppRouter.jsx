@@ -44,14 +44,11 @@ function AppRouter() {
           <Route path="/todoapp">
             <Row >
               <Col>
-                <Title>ToDoApp</Title>
-                <ToDoAppContainer />
+                <Route path="/todoapp" component={ToDoAppContainer} />
               </Col>
             </Row>
           </Route>
-          <Route path="/">
-            <DashboardPage />
-          </Route>
+          <Route path="/" component={DashboardPage} />
         </Switch>
         <Row >
           <Col className="p-0 m-0">

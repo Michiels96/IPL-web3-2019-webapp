@@ -12,7 +12,7 @@ function GalleryItemForm({
   setNewItemExternalPicture,
   setNewItemInternalPicture,
   saveNewItem,
-  available_pictures,
+  availablePictures,
 }) {
   const onDescriptionChangeEvent = e => setNewItemText(e.target.value);
   const onExternalPictureChangeEvent = e => setNewItemExternalPicture(e.target.value);
@@ -37,7 +37,7 @@ function GalleryItemForm({
                   as="select"
                   onChange={onPictureChangeEvent}
                 >
-                  {available_pictures.map(picture => {
+                  {availablePictures.map(picture => {
                     return (
                       <option key={picture} value={picture}>
                         {picture}

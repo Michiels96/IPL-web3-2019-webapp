@@ -1,8 +1,6 @@
 import React from "react";
 import GalleryItem from "./Item/GalleryItem";
 import GalleryItemForm from "./Form/GalleryItemForm";
-//Bootstrap containers
-//import { Container } from "react-bootstrap";
 //Bootstrap CSS : https://react-bootstrap.github.io/getting-started/introduction
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Gallery.css";
@@ -18,7 +16,7 @@ function Gallery({
   saveNewItem,
   removeItem,
   updateItem,
-  available_pictures,
+  availablePictures,
 }) {
   return (
     <div>
@@ -44,7 +42,7 @@ function Gallery({
         setNewItemExternalPicture={setNewItemExternalPicture}
         setNewItemInternalPicture = {setNewItemInternalPicture}
         saveNewItem={saveNewItem}
-        available_pictures={available_pictures}
+        availablePictures={availablePictures}
       />
     </div>
   );

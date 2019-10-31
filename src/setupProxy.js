@@ -5,7 +5,7 @@ module.exports = function(app) {
     target: 'http://localhost:8080',
     changeOrigin: true,
     pathRewrite: {
-        '^/api/gallery/': '/gallery/' // remove base path
+        '^/api/': '/' // remove base path
       },
   }));
 };
