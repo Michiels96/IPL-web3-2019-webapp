@@ -76,8 +76,11 @@ class GalleryContainer extends React.Component {
     loadItems() {
         fetch(GALLERY_API_URL)
             .then(response => response.json())
-            .then(data => {
+            .then(data => {              
+              if (data.success)  
                 this.setState({items: data});
+              else
+                alert("Error:" + data.error);
             })
             .catch(err => console.error("[GalleryContainer] Error when fetching gallery API:", err));
     }
@@ -147,9 +150,14 @@ class GalleryContainer extends React.Component {
 
   async saveNewItem() {
     try{
-      const newItem = await this._postNewItem()
-      this._addFormItemToItems(newItem);
-      this._resetFormItem();
+      const newItem = await this._postNewItem();
+      if(newItem.success)
+        {
+        this._addFormItemToItems(newItem);
+        this._resetFormItem();
+        }
+      else
+        alert("Error:" + newItem.error);
     }
     catch(err){
       console.error("saveNewItem : Error when fetching gallery API :", err);
@@ -215,13 +223,17 @@ class GalleryContainer extends React.Component {
         method: "delete",          
         });
       let result = await response.json();
-        
-      const newItems = [
-          ...items.slice(0, indexFound),
-          ...items.slice(indexFound + 1),
-      ];
+      if (result.success) 
+        {
+        const newItems = [
+            ...items.slice(0, indexFound),
+            ...items.slice(indexFound + 1),
+        ];
 
-      this.setState({items: newItems});
+        this.setState({items: newItems});
+        }
+      else
+        alert("Error:" + result.error);
 
 
       }
@@ -254,7 +266,9 @@ class GalleryContainer extends React.Component {
           "Content-Type": "application/json"
         }         
         });
-      const result = await response.json();   
+      const result = await response.json(); 
+      if(!result.success) 
+        alert("Error:" + result.error);
       }
       catch(err){
         console.error("updateItem : Error when fetching gallery API :", err);
