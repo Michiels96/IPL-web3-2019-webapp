@@ -23,7 +23,7 @@ const LoginContainer = () => {
         e.preventDefault();
         const user={username:username,password:password};
         try{
-            const response = await fetch("/api/users/me2",{
+            const response = await fetch("/api/users/me",{
               method: "POST",
               body: JSON.stringify(user), 
               headers: {
