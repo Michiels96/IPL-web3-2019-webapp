@@ -6,7 +6,11 @@ export const ThemeDropDown = ({ title, ...otherProps }) => {
   const { themes, setCurrentThemeOnChange } = useContext(ThemeContext);
   //Style attribute: https://reactjs.org/docs/dom-elements.html#style
   const dropDownItems = themes.map((value, index) => (
-    <Dropdown.Item key={index} as="button" style={{ backgroundColor: value }}>
+    <Dropdown.Item 
+      key={index} 
+      as="button" 
+      style={{ backgroundColor: value }}
+      >
       {value}
     </Dropdown.Item>
   ));

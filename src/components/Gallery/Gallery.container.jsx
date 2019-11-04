@@ -168,7 +168,7 @@ class GalleryContainer extends React.Component {
 
   async _postNewItem(){
     const {items} = this.state;
-    let newItem = {...this.state.formItem};
+    const newItem = {...this.state.formItem};
     newItem.picture = newItem.internalPicture || newItem.externalPicture || newItem.picture; 
     if (newItem.picture==="")
       newItem.picture=AVAILABLE_PICTURES[0];

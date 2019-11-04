@@ -30,8 +30,7 @@ function GalleryItemForm({
         <Form onSubmit={onSubmitEvent}>
           <Tabs id="uncontrolled-tab-example" defaultActiveKey="availablePictures">
             <Tab eventKey="availablePictures" title="Available pictures">
-              <Form.Group controlId="picture">
-                {/* <Form.Label>Picture</Form.Label> */}
+              <Form.Group controlId="picture">               
                 <Form.Control
                   value={picture}
                   as="select"

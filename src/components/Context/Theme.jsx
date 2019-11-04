@@ -11,18 +11,24 @@ export const ThemeContext = React.createContext({
 // any kind of "children" components
 // hooks are used in order to manage state
 export const ThemeProvider= ({children})=> {
-    //load the currentTheme (color) from localStorage
-    let theme = localStorage.getItem('currentTheme');
-    if (theme===null)
+    //load the currentTheme from localStorage
+    const retrievedTheme = localStorage.getItem('currentTheme');    
+    let theme ;
+    if (retrievedTheme===null)
         theme=themes[3];
     else
-        console.log("Theme color loaded from localStorage:",theme);
+        {
+        const retrievedThemeObject = JSON.parse(retrievedTheme);
+        theme = retrievedThemeObject.color;
+        }
+   
     // Initialize the current theme state
     const [currentTheme,setCurrentTheme] = useState(theme);
     // Initialize the context function to update the state
     const setCurrentThemeOnChange = color => {
         // Store the currentTheme in the localStorage
-        localStorage.setItem('currentTheme',color);
+        const currentTheme = {color:color};
+        localStorage.setItem('currentTheme', JSON.stringify(currentTheme));
         // Update the state
         return setCurrentTheme(color);
     }
