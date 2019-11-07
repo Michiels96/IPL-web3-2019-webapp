@@ -13,36 +13,35 @@ function GalleryItem({
     setExistingItemText,
 })  {
     const onDeleteEvent = (e) => removeItem(id);
-  
     const onSaveEvent = (e) => updateItem(id);
-  
+
     return (
         <Row className="m-3 justify-content-start border border-dark rounded-lg">
-            <Picture picture={picture} /> 
-            <Description id={id} description={description} setExistingItemText={setExistingItemText} />
+            <Picture picture={picture} />
+            <Description
+                id={id}
+                description={description}
+                setExistingItemText={setExistingItemText}
+            />
             <Col className="col text-center">
-                <ThemedButton 
+                <ThemedButton
                     id="save_item"
                     variant="outline-dark"
                     className="m-2"
                     onClick={onSaveEvent}
                     text="Save"
-                />           
-            
+                />
 
-                <ThemedButton 
+                <ThemedButton
                     id="delete_item"
                     variant="outline-dark"
                     className="m-2"
-                    onClick={onDeleteEvent} 
+                    onClick={onDeleteEvent}
                     text="Delete" />
 
           </Col>
-        
-         
-        </Row>        
+        </Row>
     )
-  
 }
 
 export default GalleryItem;

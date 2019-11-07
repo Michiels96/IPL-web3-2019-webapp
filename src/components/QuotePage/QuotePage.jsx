@@ -9,7 +9,7 @@ function QuotePage() {
       <Quote
         message="Never trust a computer you can't throw out a window."
         author="Steve Wozniak"
-      ></Quote>
+      />
     </>
   );
 }

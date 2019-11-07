@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
-import Navigation from "./Navigation/Navigation";
-import { ThemeContext } from "./Context/Theme";
-import { ThemeDropDown } from "./DropDown/ThemeDropDown";
+import Navigation from "../Navigation/Navigation";
+import {ThemeContext} from '../../contexts/Theme/Theme';
+import { ThemeDropDown } from "../DropDown/ThemeDropDown";
 import { Container, Row, Col } from "react-bootstrap";
-import PageRouter from "./PageRouter";
+import PageRoute from "./PageRoute";
 
 function Layout() {
   const { currentTheme } = useContext(ThemeContext);
@@ -21,7 +21,7 @@ function Layout() {
       <Row>
         <Col className="p-0 m-0">
 
-          <PageRouter/> 
+          <PageRoute/>
          
         </Col>
       </Row>

@@ -1,7 +1,6 @@
 import React from "react";
 import { Row,Col,Form, Button,Tabs,Tab } from "react-bootstrap";
 import LoadPicture from "../../Picture/LoadPicture";
-import {ThemeContext} from '../../Context/Theme';
 import {ThemedButton} from '../../Button/ThemedButton'
 
 function GalleryItemForm({

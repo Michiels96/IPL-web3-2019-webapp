@@ -2,13 +2,16 @@ import React from 'react'
 
 import './App.css'
 
-import AppRouter from '../AppRouter'
-import {ThemeProvider} from '../Context/Theme';
+import Layout from './Layout'
+import {ThemeProvider} from '../../contexts/Theme/Theme';
+import { BrowserRouter as Router } from "react-router-dom";
 
 function App() {
   return (
     <ThemeProvider>
-      <AppRouter />
+        <Router>
+            <Layout />
+        </Router>
     </ThemeProvider>    
   )
 }
