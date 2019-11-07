@@ -76,8 +76,11 @@ class GalleryContainer extends React.Component {
     loadItems() {
         fetch(GALLERY_API_URL)
             .then(response => response.json())
-            .then(data => {
-                this.setState({items: data});
+            .then(data => {              
+              if (data.error)         
+                return alert("Error:" + data.error);
+              
+              this.setState({items: data});
             })
             .catch(err => console.error("[GalleryContainer] Error when fetching gallery API:", err));
     }
@@ -147,9 +150,14 @@ class GalleryContainer extends React.Component {
 
   async saveNewItem() {
     try{
-      const newItem = await this._postNewItem()
+      const newItem = await this._postNewItem();
+      if(newItem.error)        
+          return alert("Error:" + newItem.error);        
+    
       this._addFormItemToItems(newItem);
       this._resetFormItem();
+        
+      
     }
     catch(err){
       console.error("saveNewItem : Error when fetching gallery API :", err);
@@ -162,7 +170,9 @@ class GalleryContainer extends React.Component {
     const {items} = this.state;
     const newItem = {...this.state.formItem};
     newItem.picture = newItem.internalPicture || newItem.externalPicture || newItem.picture; 
-    
+    if (newItem.picture==="")
+      newItem.picture=AVAILABLE_PICTURES[0];
+
     try{
       console.log("GalleryContainer::saveNewItem :",newItem);
       const response = await fetch(GALLERY_API_URL,{
@@ -215,6 +225,8 @@ class GalleryContainer extends React.Component {
         method: "delete",          
         });
       let result = await response.json();
+      if (result.error) 
+        return alert("Error:" + result.error);
         
       const newItems = [
           ...items.slice(0, indexFound),
@@ -222,6 +234,9 @@ class GalleryContainer extends React.Component {
       ];
 
       this.setState({items: newItems});
+        
+      
+        
 
 
       }
@@ -254,7 +269,9 @@ class GalleryContainer extends React.Component {
           "Content-Type": "application/json"
         }         
         });
-      const result = await response.json();   
+      const result = await response.json(); 
+      if(result.error) 
+        return alert("Error:" + result.error);
       }
       catch(err){
         console.error("updateItem : Error when fetching gallery API :", err);
