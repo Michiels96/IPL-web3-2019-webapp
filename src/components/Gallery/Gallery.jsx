@@ -1,7 +1,6 @@
 import React from "react";
 import GalleryItem from "./Item/GalleryItem";
 import GalleryItemForm from "./Form/GalleryItemForm";
-import { Container } from "react-bootstrap";
 //Bootstrap CSS : https://react-bootstrap.github.io/getting-started/introduction
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Gallery.css";
@@ -20,7 +19,7 @@ function Gallery({
   availablePictures,
 }) {
   return (
-    <Container fluid>
+    <div>
       {items.map((item, index) => {
         const { description, picture } = item;
 
@@ -45,7 +44,7 @@ function Gallery({
         saveNewItem={saveNewItem}
         availablePictures={availablePictures}
       />
-    </Container>
+    </div>
   );
 }
 
