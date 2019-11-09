@@ -7,16 +7,17 @@ import ToDoAppPage from "../ToDoAppPage/ToDoAppPage";
 import QuotePage from "../QuotePage/QuotePage";
 import LoginContainer from "components/Login/LoginContainer";
 import { Logout } from "components/Logout/Logout";
+import SecuredRoute from "../SecuredRoute/SecuredRoute";
 
 function PageRoute() {
     return (
         <Switch>
             <Route path="/login" component={LoginContainer}/>
             <Route path="/logout" component={Logout}/>
-            <Route path="/quote" component={QuotePage}/>
-            <Route path="/gallery" component={GalleryPage}/>
-            <Route path="/todoapp" component={ToDoAppPage}/>
-            <Route path="/" component={DashboardPage}/>
+            <SecuredRoute path="/quote" component={QuotePage}/>
+            <SecuredRoute path="/gallery" component={GalleryPage}/>
+            <SecuredRoute path="/todoapp" component={ToDoAppPage}/>
+            <SecuredRoute path="/" component={DashboardPage}/>
         </Switch>
     );
 }

@@ -23,7 +23,6 @@ const LoginContainer = () => {
       username: username,
       password: password
     };
-
     try {
       const response = await fetch("/api/users/me", {
         method: "POST",
@@ -46,8 +45,8 @@ const LoginContainer = () => {
       setErrorMessage(err.toString());
     }
   };
-  //render
 
+  //render
   if (!isAuthenticated()) {
     // authenticated//mission 1
     return (

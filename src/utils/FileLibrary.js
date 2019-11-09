@@ -14,8 +14,7 @@ export const extractFileContent = (event, MAX_SIZE = 1048576, fileType) => {
           reject(new Error("Problem parsing input file."));
         };
 
-        reader.onload = (e) => {
-          console.log("EVENT:",e);
+        reader.onload = (e) => {          
           resolve(e.target.result);
         };
         reader.readAsDataURL(fileToExtract);
