@@ -1,5 +1,6 @@
-import React from "react";
+import React, {useContext} from "react";
 import Gallery from "./Gallery";
+import { AuthenticationContext } from "../Context/Authentication";
 
 // Understanding CORS Ajax issues : https://stackoverflow.com/questions/21854516/understanding-ajax-cors-and-security-considerations
 // & https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
@@ -40,7 +41,6 @@ class GalleryContainer extends React.Component {
         description: "",
       }
     };
-
     this.setNewItemText = this.setNewItemText.bind(this);
     this.setExistingItemText = this.setExistingItemText.bind(this);
     this.setNewItemPicture = this.setNewItemPicture.bind(this);
@@ -48,11 +48,11 @@ class GalleryContainer extends React.Component {
     this.setNewItemInternalPicture = this.setNewItemInternalPicture.bind(this);
     this.saveNewItem = this.saveNewItem.bind(this);
     this.removeItem = this.removeItem.bind(this);
-    this.updateItem = this.updateItem.bind(this);
+    this.updateItem = this.updateItem.bind(this);  
   }
-
+  
+  
   render() {
-    console.log("render:",this.state.items);
     return (
       <Gallery
         items={this.state.items}
@@ -74,7 +74,13 @@ class GalleryContainer extends React.Component {
     }
 
     loadItems() {
-        fetch(GALLERY_API_URL)
+      const {JWT} = this.context;      
+        fetch(GALLERY_API_URL,{
+            method: "GET",         
+            headers: {              
+              "Authorization":JWT
+              }
+            })
             .then(response => response.json())
             .then(data => {              
               if (data.error)         
@@ -82,7 +88,7 @@ class GalleryContainer extends React.Component {
               
               this.setState({items: data});
             })
-            .catch(err => console.error("[GalleryContainer] Error when fetching gallery API:", err));
+            .catch(err => console.error("[GalleryContainer] Error when fetching gallery API:", err));          
     }
 
     setNewItemText(newValue) {
@@ -167,8 +173,9 @@ class GalleryContainer extends React.Component {
   }
 
   async _postNewItem(){
+    const {JWT} = this.context;
     const {items} = this.state;
-    const newItem = {...this.state.formItem};
+    let newItem = {...this.state.formItem};
     newItem.picture = newItem.internalPicture || newItem.externalPicture || newItem.picture; 
     if (newItem.picture==="")
       newItem.picture=AVAILABLE_PICTURES[0];
@@ -179,7 +186,8 @@ class GalleryContainer extends React.Component {
         method: "POST",
         body: JSON.stringify(newItem), 
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          "Authorization":JWT
           }
         });
       return await response.json(); 
@@ -220,9 +228,13 @@ class GalleryContainer extends React.Component {
       return;
     }   
     try{
+      const {JWT} = this.context;
       console.log("GalleryContainer::removeItem :",item_id);
       let response = await fetch(GALLERY_API_URL+item_id,{
-        method: "delete",          
+        method: "delete", 
+        headers: {          
+          "Authorization":JWT
+          }         
         });
       let result = await response.json();
       if (result.error) 
@@ -234,11 +246,6 @@ class GalleryContainer extends React.Component {
       ];
 
       this.setState({items: newItems});
-        
-      
-        
-
-
       }
       catch(err){
         console.error("deleteItem : Error when fetching gallery API :", err);
@@ -258,6 +265,7 @@ class GalleryContainer extends React.Component {
     }
 
     try{
+      const {JWT} = this.context;
       const updatedItems = [
         ...this.state.items
       ]
@@ -266,7 +274,8 @@ class GalleryContainer extends React.Component {
         method: "PUT", 
         body: JSON.stringify( updatedItems[indexFound]), // data can be `string` or {object}!
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          "Authorization":JWT
         }         
         });
       const result = await response.json(); 
@@ -280,5 +289,7 @@ class GalleryContainer extends React.Component {
     
   }
 }
+//consume the authentication context within the class
+GalleryContainer.contextType = AuthenticationContext;
 
 export default GalleryContainer;
