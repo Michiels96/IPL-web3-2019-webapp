@@ -1,6 +1,6 @@
 import React, {useContext} from "react";
 import Gallery from "./Gallery";
-import { AuthenticationContext } from "../Context/Authentication";
+import { AuthenticationContext } from "../../contexts/Authentication/Authentication";
 
 // Understanding CORS Ajax issues : https://stackoverflow.com/questions/21854516/understanding-ajax-cors-and-security-considerations
 // & https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS

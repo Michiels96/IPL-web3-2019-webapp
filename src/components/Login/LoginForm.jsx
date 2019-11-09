@@ -10,7 +10,7 @@ const LoginForm = ({
 }) => {
   return (
     <Row>
-      <Col>
+      <Col className="m-3">
         <Form onSubmit={authenticate}>
           <Form.Group controlId="formHorizontalUsername">
             <Form.Label>Email</Form.Label>

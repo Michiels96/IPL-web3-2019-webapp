@@ -1,11 +1,8 @@
 import React,{useContext} from "react";
 import {Link} from "react-router-dom";
 import {Nav, Navbar} from "react-bootstrap";
-<<<<<<< HEAD
 import NavLinkItem from "./NavLinkItem";
-=======
-import { AuthenticationContext } from "components/Context/Authentication";
->>>>>>> recap
+import { AuthenticationContext } from "contexts/Authentication/Authentication";
 
 
 function Navigation({style,...otherProps}) {
@@ -14,23 +11,12 @@ function Navigation({style,...otherProps}) {
     <Navbar style={{...style}} {...otherProps} expand="sm">
       <Navbar.Brand as={Link} to="/" className="ml-3">Navbar</Navbar.Brand>
       <Nav className="mr-auto">
-<<<<<<< HEAD
+        {! isAuthenticated() && <NavLinkItem as={Link} to="/login">Login</NavLinkItem>}
         <NavLinkItem as={Link} to="/">Dashboard</NavLinkItem>
         <NavLinkItem as={Link} to="/quote">Quote</NavLinkItem>
         <NavLinkItem as={Link} to="/gallery">Gallery</NavLinkItem>
         <NavLinkItem as={Link} to="/todoapp">ToDoApp</NavLinkItem>
-=======
-      {!isAuthenticated()&&
-        <Nav.Link as={Link} to="/login">Login</Nav.Link>}
-
-
-        <Nav.Link as={Link} to="/">Dashboard</Nav.Link>
-        <Nav.Link as={Link} to="/quote">Quote</Nav.Link>
-        <Nav.Link as={Link} to="/gallery">Gallery</Nav.Link>
-        <Nav.Link as={Link} to="/todoapp">ToDoApp</Nav.Link>
-        {isAuthenticated()&&
-        <Nav.Link as={Link} to="/logout">Logout</Nav.Link>}
->>>>>>> recap
+        {isAuthenticated() && <NavLinkItem as={Link} to="/logout">Logout</NavLinkItem>}
       </Nav>
     </Navbar>
   );
